@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<BorlandProject>
+  <PersonalityInfo>
+    <Option>
+      <Option Name="Personality">Default.Personality</Option>
+      <Option Name="ProjectType"></Option>
+      <Option Name="Version">1.0</Option>
+      <Option Name="GUID">{3E20853C-9C33-4B39-B768-8DDC64D47E1D}</Option>
+    </Option>
+  </PersonalityInfo>
+  <Default.Personality>
+    
+    <Projects>
+      <Projects Name="PNG_D10.bpl">PNG_D10.bdsproj</Projects>
+      <Projects Name="PngComponentsD10.bpl">PngComponentsD10.bdsproj</Projects>
+      <Projects Name="PngComponentsD10D.bpl">PngComponentsD10D.bdsproj</Projects>
+      <Projects Name="Targets">PNG_D10.bpl PngComponentsD10.bpl PngComponentsD10D.bpl</Projects>
+    </Projects>
+    <Dependencies/>
+  </Default.Personality>
+</BorlandProject>
