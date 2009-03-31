@@ -1,0 +1,54 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{6608efd9-301e-41e5-a78b-055412f93d54}</ProjectGuid>
+  </PropertyGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Projects Include="PngComponentsD.dproj" />
+    <Projects Include="PngComponentsR.dproj" />
+    <Projects Include="PNG_R.dproj" />
+  </ItemGroup>
+  <ProjectExtensions>
+    <Borland.Personality>Default.Personality</Borland.Personality>
+    <Borland.ProjectType />
+    <BorlandProject>
+  <BorlandProject xmlns=""> <Default.Personality> </Default.Personality> </BorlandProject></BorlandProject>
+  </ProjectExtensions>
+  <Target Name="PNG_R">
+    <MSBuild Projects="PNG_R.dproj" Targets="" />
+  </Target>
+  <Target Name="PNG_R:Clean">
+    <MSBuild Projects="PNG_R.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="PNG_R:Make">
+    <MSBuild Projects="PNG_R.dproj" Targets="Make" />
+  </Target>
+  <Target Name="PngComponentsR">
+    <MSBuild Projects="PngComponentsR.dproj" Targets="" />
+  </Target>
+  <Target Name="PngComponentsR:Clean">
+    <MSBuild Projects="PngComponentsR.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="PngComponentsR:Make">
+    <MSBuild Projects="PngComponentsR.dproj" Targets="Make" />
+  </Target>
+  <Target Name="PngComponentsD">
+    <MSBuild Projects="PngComponentsD.dproj" Targets="" />
+  </Target>
+  <Target Name="PngComponentsD:Clean">
+    <MSBuild Projects="PngComponentsD.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="PngComponentsD:Make">
+    <MSBuild Projects="PngComponentsD.dproj" Targets="Make" />
+  </Target>
+  <Target Name="Build">
+    <CallTarget Targets="PNG_R;PngComponentsR;PngComponentsD" />
+  </Target>
+  <Target Name="Clean">
+    <CallTarget Targets="PNG_R:Clean;PngComponentsR:Clean;PngComponentsD:Clean" />
+  </Target>
+  <Target Name="Make">
+    <CallTarget Targets="PNG_R:Make;PngComponentsR:Make;PngComponentsD:Make" />
+  </Target>
+  <Import Condition="Exists('$(MSBuildBinPath)\Borland.Group.Targets')" Project="$(MSBuildBinPath)\Borland.Group.Targets" />
+</Project>
