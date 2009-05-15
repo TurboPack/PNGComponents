@@ -26,7 +26,7 @@
 			<DllSuffix>120</DllSuffix>
 			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
 			<DCC_Platform>x86</DCC_Platform>
-			<DCC_DependencyCheckOutputName>C:\Dokumente und Einstellungen\All Users\Dokumente\RAD Studio\6.0\Bpl\PngComponentsDesign120.bpl</DCC_DependencyCheckOutputName>
+			<DCC_DependencyCheckOutputName>C:\Users\Public\Documents\RAD Studio\6.0\Bpl\PngComponentsDesign120.bpl</DCC_DependencyCheckOutputName>
 			<DCC_Description>Png components designtime</DCC_Description>
 			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
 			<DCC_N>false</DCC_N>
