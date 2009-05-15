@@ -731,9 +731,9 @@ procedure TPngImageList.InsertPng(Index: Integer; const Png: TPngImage; Backgrou
 var
   I: Integer;
   Icon: HICON;
-  TempList: TCustomImageList;
+  TempList: TPngImageList;
 begin
-  TempList := TCustomImageList.Create(nil);
+  TempList := TPngImageList(TComponentClass(ClassType).Create(nil));
   try
     TempList.Assign(Self);
     ImageList_RemoveAll(Handle);
