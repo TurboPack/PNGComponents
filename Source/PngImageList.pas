@@ -30,6 +30,9 @@ type
     procedure AssignTo(Dest: TPersistent); override;
     procedure CopyPngs; virtual;
     procedure DoDraw(Index: Integer; Canvas: TCanvas; X, Y: Integer; Style: Cardinal; Enabled: Boolean = True); override;
+    procedure InternalInsertPng(Index: Integer; const Png: TPngImage; Background:
+        TColor = clNone);
+    procedure InternalAddPng(const Png: TPngImage; Background: TColor = clNone);
     function PngToIcon(const Png: TPngImage; Background: TColor = clNone): HICON;
     procedure ReadData(Stream: TStream); override;
     procedure SetEnabledImages(const Value: Boolean); virtual;
@@ -41,6 +44,7 @@ type
     //Patched methods
     function Add(Image, Mask: TBitmap): Integer; virtual;
     function AddIcon(Image: TIcon): Integer; virtual;
+    function AddPng(Image: TPngImage; Background: TColor = clNone): Integer;
     function AddImage(Value: TCustomImageList; Index: Integer): Integer; virtual;
     procedure AddImages(Value: TCustomImageList); virtual;
     function AddMasked(Image: TBitmap; MaskColor: TColor): Integer; virtual;
@@ -50,8 +54,9 @@ type
     procedure EndUpdate(Update: Boolean = True);
     procedure Insert(Index: Integer; Image, Mask: TBitmap); virtual;
     procedure InsertIcon(Index: Integer; Image: TIcon); virtual;
+    procedure InsertPng(Index: Integer; Image: TPngImage; Background: TColor =
+        clNone);
     procedure InsertMasked(Index: Integer; Image: TBitmap; MaskColor: TColor); virtual;
-    procedure InsertPng(Index: Integer; const Png: TPngImage; Background: TColor = clNone);
     procedure Move(CurIndex, NewIndex: Integer); virtual;
     procedure Replace(Index: Integer; Image, Mask: TBitmap); virtual;
     procedure ReplaceIcon(Index: Integer; Image: TIcon); virtual;
@@ -290,27 +295,18 @@ end;
 
 function TPngImageList.Add(Image, Mask: TBitmap): Integer;
 var
-  Item: TPngImageCollectionItem;
   Patch: TMethodPatch;
-  Icon: HICON;
+  Png: TPngImage;
 begin
-  if TObject(Self) is TPngImageList then
-    if Image = nil then
-      Result := -1
-    else begin
-      BeginUpdate;
-      try
-        Item := FPngImages.Add(True);
-        CreatePNG(Image, Mask, Item.FPngImage);
-        Result := Item.Index;
-        Icon := PngToIcon(Item.PngImage, Item.Background);
-        ImageList_AddIcon(Handle, Icon);
-        DestroyIcon(Icon);
-        Change;
-      finally
-        EndUpdate;
-      end;
-    end
+  if TObject(Self) is TPngImageList then begin
+    Png := TPngImage.Create;
+    try
+      CreatePNG(Image, Mask, Png);
+      result := AddPng(Png);
+    finally
+      Png.Free;
+    end;
+  end
   else begin
     Patch := FindMethodPatch('Add');
     if Patch <> nil then begin
@@ -328,27 +324,18 @@ end;
 
 function TPngImageList.AddIcon(Image: TIcon): Integer;
 var
-  Item: TPngImageCollectionItem;
   Patch: TMethodPatch;
-  Icon: HICON;
+  Png: TPngImage;
 begin
-  if TObject(Self) is TPngImageList then
-    if Image = nil then
-      Result := -1
-    else begin
-      BeginUpdate;
-      try
-        Item := FPngImages.Add(True);
-        ConvertToPNG(Image, Item.FPngImage);
-        Result := Item.Index;
-        Icon := PngToIcon(Item.PngImage, Item.Background);
-        ImageList_AddIcon(Handle, Icon);
-        DestroyIcon(Icon);
-        Change;
-      finally
-        EndUpdate;
-      end;
-    end
+  if TObject(Self) is TPngImageList then begin
+    Png := TPngImage.Create;
+    try
+      ConvertToPNG(Image, Png);
+      result := AddPng(Png);
+    finally
+      Png.Free;
+    end;
+  end
   else begin
     Patch := FindMethodPatch('AddIcon');
     if Patch <> nil then begin
@@ -364,26 +351,39 @@ begin
   end;
 end;
 
-function TPngImageList.AddImage(Value: TCustomImageList; Index: Integer): Integer;
+function TPngImageList.AddPng(Image: TPngImage; Background: TColor = clNone):
+    Integer;
 var
   Item: TPngImageCollectionItem;
+begin
+  Result := -1;
+  if Image = nil then Exit;
+
+  BeginUpdate;
+  try
+    Item := FPngImages.Add(True);
+    Item.PngImage := Image;
+    Item.Background := Background;
+    Result := Item.Index;
+    InternalAddPng(Item.PngImage, Item.Background);
+    Change;
+  finally
+    EndUpdate(false);
+  end;
+end;
+
+function TPngImageList.AddImage(Value: TCustomImageList; Index: Integer): Integer;
+var
   Patch: TMethodPatch;
-  Icon: HICON;
+  Png: TPngImage;
 begin
   if TObject(Self) is TPngImageList then begin
-    //Add a new PNG based on the image from another imagelist. If this happens to be
-    //a PngImageList, the PNG object is simply copied.
-    BeginUpdate;
+    Png := TPngImage.Create;
     try
-      Item := FPngImages.Add(False);
-      CopyImageFromImageList(Item.FPngImage, Value, Index);
-      Icon := PngToIcon(Item.PngImage, Item.Background);
-      ImageList_AddIcon(Handle, Icon);
-      DestroyIcon(Icon);
-      Result := Item.Index;
-      Change;
+      CopyImageFromImageList(Png, Value, Index);
+      result := AddPng(Png);
     finally
-      EndUpdate;
+      Png.Free;
     end;
   end
   else begin
@@ -403,23 +403,23 @@ end;
 
 procedure TPngImageList.AddImages(Value: TCustomImageList);
 var
-  Item: TPngImageCollectionItem;
   Patch: TMethodPatch;
   I: Integer;
-  Icon: HICON;
+  Png: TPngImage;
 begin
   if TObject(Self) is TPngImageList then begin
     BeginUpdate;
     try
       //Copy every image from Value into this imagelist.
-      for I := 0 to Value.Count - 1 do begin
-        Item := FPngImages.Add(False);
-        CopyImageFromImageList(Item.FPngImage, Value, I);
-        Icon := PngToIcon(Item.PngImage, Item.Background);
-        ImageList_AddIcon(Handle, Icon);
-        DestroyIcon(Icon);
+      Png := TPngImage.Create;
+      try
+        for I := 0 to Value.Count - 1 do begin
+          CopyImageFromImageList(Png, Value, I);
+          AddPng(Png);
+        end;
+      finally
+        Png.Free;
       end;
-      Change;
     finally
       EndUpdate;
     end;
@@ -439,28 +439,18 @@ end;
 
 function TPngImageList.AddMasked(Image: TBitmap; MaskColor: TColor): Integer;
 var
-  Item: TPngImageCollectionItem;
   Patch: TMethodPatch;
-  Icon: HICON;
+  Png: TPngImage;
 begin
-  if TObject(Self) is TPngImageList then
-    if Image = nil then
-      Result := -1
-    else begin
-      BeginUpdate;
-      try
-        //Add a new PNG based on the image and a colored mask.
-        Item := FPngImages.Add(True);
-        CreatePNGMasked(Image, MaskColor, Item.FPngImage);
-        Result := Item.Index;
-        Icon := PngToIcon(Item.PngImage, Item.Background);
-        ImageList_AddIcon(Handle, Icon);
-        DestroyIcon(Icon);
-        Change;
-      finally
-        EndUpdate;
-      end;
-    end
+  if TObject(Self) is TPngImageList then begin
+    Png := TPngImage.Create;
+    try
+      CreatePNGMasked(Image, MaskColor, Png);
+      result := AddPng(Png);
+    finally
+      Png.Free;
+    end;
+  end
   else begin
     Patch := FindMethodPatch('AddMasked');
     if Patch <> nil then begin
@@ -475,8 +465,6 @@ begin
       Result := -1;
   end;
 end;
-
-{ TPngImageList }
 
 procedure TPngImageList.AssignTo(Dest: TPersistent);
 begin
@@ -525,6 +513,7 @@ var
   I: Integer;
   Png: TPngImage;
   Icon: HIcon;
+  item: TPngImageCollectionItem;
 begin
   //Are we adding a bunch of images?
   if FLocked > 0 then
@@ -535,20 +524,18 @@ begin
   Handle := ImageList_Create(Width, Height, ILC_COLOR32 or (Integer(Masked) *
     ILC_MASK), 0, AllocBy);
 
-  if not FEnabledImages and (FPngOptions <> []) then
-    Png := TPngImage.Create
-  else
-    Png := nil; //<- To prevent a compiler warning
+  Png := TPngImage.Create;
   try
     for I := 0 to FPngImages.Count - 1 do begin
-      if TPngImageCollectionItem(FPngImages.Items[I]).PngImage = nil then
+      item := FPngImages.Items[I];
+      if (item.PngImage = nil) or item.PngImage.Empty then
         Continue;
-      if FEnabledImages or (FPngOptions = []) then
-        Icon := PngToIcon(FPngImages.Items[I].PngImage,
-          FPngImages.Items[I].Background)
+      if FEnabledImages or (FPngOptions = []) then begin
+        Icon := PngToIcon(item.PngImage, item.Background);
+      end
       else begin
         //Basically the same as in the DrawPNG function
-        Png.Assign(TPngImageCollectionItem(FPngImages.Items[I]).PngImage);
+        Png.Assign(item.PngImage);
         if pngBlendOnDisabled in FPngOptions then
           MakeImageBlended(Png);
         if pngGrayscaleOnDisabled in FPngOptions then
@@ -559,8 +546,7 @@ begin
       DestroyIcon(Icon);
     end;
   finally
-    if not FEnabledImages and (FPngOptions <> []) then
-      Png.Free;
+    Png.Free;
   end;
 end;
 
@@ -609,7 +595,7 @@ begin
     Options := []
   else
     Options := FPngOptions;
-  Png := TPngImageCollectionItem(FPngImages.Items[Index]);
+  Png := FPngImages.Items[Index];
   if Png <> nil then
     DrawPNG(Png.PngImage, Canvas, PaintRect, Options);
 end;
@@ -633,20 +619,18 @@ end;
 
 procedure TPngImageList.Insert(Index: Integer; Image, Mask: TBitmap);
 var
-  Item: TPngImageCollectionItem;
   Patch: TMethodPatch;
+  Png: TPngImage;
 begin
   if TObject(Self) is TPngImageList then begin
     //Insert a new PNG based on the image and its mask.
     if Image <> nil then begin
-      BeginUpdate;
+      Png := TPngImage.Create;
       try
-        Item := FPngImages.Insert(Index, True);
-        CreatePNG(Image, Mask, Item.FPngImage);
-        InsertPng(Index, Item.PngImage, Item.Background);
-        Change;
+        CreatePNG(Image, Mask, Png);
+        InsertPng(Index, Png);
       finally
-        EndUpdate(False);
+        Png.Free;
       end;
     end;
   end
@@ -665,20 +649,18 @@ end;
 
 procedure TPngImageList.InsertIcon(Index: Integer; Image: TIcon);
 var
-  Item: TPngImageCollectionItem;
   Patch: TMethodPatch;
+  Png: TPngImage;
 begin
   if TObject(Self) is TPngImageList then begin
     //Insert a new PNG based on the image.
     if Image <> nil then begin
-      BeginUpdate;
+      Png := TPngImage.Create;
       try
-        Item := FPngImages.Insert(Index, True);
-        ConvertToPNG(Image, Item.FPngImage);
-        InsertPng(Index, Item.PngImage, Item.Background);
-        Change;
+        ConvertToPNG(Image, Png);
+        InsertPng(Index, Png);
       finally
-        EndUpdate(False);
+        Png.Free;
       end;
     end;
   end
@@ -695,22 +677,39 @@ begin
   end;
 end;
 
-procedure TPngImageList.InsertMasked(Index: Integer; Image: TBitmap; MaskColor: TColor);
+procedure TPngImageList.InsertPng(Index: Integer; Image: TPngImage; Background:
+    TColor = clNone);
 var
   Item: TPngImageCollectionItem;
+begin
+  if Image <> nil then begin
+    BeginUpdate;
+    try
+      Item := PngImages.Insert(Index, True);
+      Item.PngImage := Image;
+      Item.Background := Background;
+      InternalInsertPng(Index, Item.PngImage, Item.Background);
+      Change;
+    finally
+      EndUpdate(False);
+    end;
+  end;
+end;
+
+procedure TPngImageList.InsertMasked(Index: Integer; Image: TBitmap; MaskColor: TColor);
+var
   Patch: TMethodPatch;
+  Png: TPngImage;
 begin
   if TObject(Self) is TPngImageList then begin
     //Insert a new PNG based on the image and a colored mask.
     if Image <> nil then begin
-      BeginUpdate;
+      Png := TPngImage.Create;
       try
-        Item := FPngImages.Insert(Index, True);
-        CreatePNGMasked(Image, MaskColor, Item.FPngImage);
-        InsertPng(Index, Item.PngImage, Item.Background);
-        Change;
+        CreatePNGMasked(Image, MaskColor, Png);
+        InsertPng(Index, Png);
       finally
-        EndUpdate(False);
+        Png.Free;
       end;
     end;
   end
@@ -727,7 +726,8 @@ begin
   end;
 end;
 
-procedure TPngImageList.InsertPng(Index: Integer; const Png: TPngImage; Background: TColor);
+procedure TPngImageList.InternalInsertPng(Index: Integer; const Png: TPngImage;
+    Background: TColor);
 var
   I: Integer;
   Icon: HICON;
@@ -755,6 +755,19 @@ begin
   end;
 end;
 
+procedure TPngImageList.InternalAddPng(const Png: TPngImage; Background: TColor
+    = clNone);
+var
+  Icon: HICON;
+begin
+  Icon := PngToIcon(Png, Background);
+  try
+    ImageList_AddIcon(Handle, Icon);
+  finally
+    DestroyIcon(Icon);
+  end;
+end;
+
 procedure TPngImageList.Move(CurIndex, NewIndex: Integer);
 var
   Patch: TMethodPatch;
@@ -765,7 +778,7 @@ begin
     BeginUpdate;
     try
       ImageList_Remove(Handle, CurIndex);
-      InsertPng(NewIndex, FPngImages[CurIndex].PngImage,
+      InternalInsertPng(NewIndex, FPngImages[CurIndex].PngImage,
         FPngImages[CurIndex].Background);
       FPngImages[CurIndex].Index := NewIndex;
       Change;
@@ -1239,6 +1252,8 @@ end;
 
 procedure TPngImageCollectionItem.SetPngImage(const Value: TPngImage);
 begin
+  if FPngImage = nil then
+    FPngImage := TPngImage.Create;
   FPngImage.Assign(Value);
   Changed(False);
 end;

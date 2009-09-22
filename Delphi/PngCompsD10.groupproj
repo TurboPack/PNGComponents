@@ -1,0 +1,54 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <ProjectGuid>{b6741e68-d374-4575-902d-ac060981f8ea}</ProjectGuid>
+  </PropertyGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Projects Include="PngComponentsD10.dproj" />
+    <Projects Include="PngComponentsD10D.dproj" />
+    <Projects Include="PNG_D10.dproj" />
+  </ItemGroup>
+  <ProjectExtensions>
+    <Borland.Personality>Default.Personality</Borland.Personality>
+    <Borland.ProjectType />
+    <BorlandProject>
+  <BorlandProject xmlns=""> <Default.Personality> </Default.Personality> </BorlandProject></BorlandProject>
+  </ProjectExtensions>
+  <Target Name="PNG_D10">
+    <MSBuild Projects="PNG_D10.dproj" Targets="" />
+  </Target>
+  <Target Name="PNG_D10:Clean">
+    <MSBuild Projects="PNG_D10.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="PNG_D10:Make">
+    <MSBuild Projects="PNG_D10.dproj" Targets="Make" />
+  </Target>
+  <Target Name="PngComponentsD10">
+    <MSBuild Projects="PngComponentsD10.dproj" Targets="" />
+  </Target>
+  <Target Name="PngComponentsD10:Clean">
+    <MSBuild Projects="PngComponentsD10.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="PngComponentsD10:Make">
+    <MSBuild Projects="PngComponentsD10.dproj" Targets="Make" />
+  </Target>
+  <Target Name="PngComponentsD10D">
+    <MSBuild Projects="PngComponentsD10D.dproj" Targets="" />
+  </Target>
+  <Target Name="PngComponentsD10D:Clean">
+    <MSBuild Projects="PngComponentsD10D.dproj" Targets="Clean" />
+  </Target>
+  <Target Name="PngComponentsD10D:Make">
+    <MSBuild Projects="PngComponentsD10D.dproj" Targets="Make" />
+  </Target>
+  <Target Name="Build">
+    <CallTarget Targets="PNG_D10;PngComponentsD10;PngComponentsD10D" />
+  </Target>
+  <Target Name="Clean">
+    <CallTarget Targets="PNG_D10:Clean;PngComponentsD10:Clean;PngComponentsD10D:Clean" />
+  </Target>
+  <Target Name="Make">
+    <CallTarget Targets="PNG_D10:Make;PngComponentsD10:Make;PngComponentsD10D:Make" />
+  </Target>
+  <Import Condition="Exists('$(MSBuildBinPath)\Borland.Group.Targets')" Project="$(MSBuildBinPath)\Borland.Group.Targets" />
+</Project>

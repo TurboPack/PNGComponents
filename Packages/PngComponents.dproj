@@ -23,8 +23,8 @@
 			<DesignOnlyPackage>false</DesignOnlyPackage>
 			<DCC_ImageBase>00400000</DCC_ImageBase>
 			<DCC_DebugInformation>false</DCC_DebugInformation>
-			<DllSuffix>120</DllSuffix>
-			<DCC_DependencyCheckOutputName>C:\Dokumente und Einstellungen\All Users\Dokumente\RAD Studio\6.0\Bpl\PngComponents120.bpl</DCC_DependencyCheckOutputName>
+			<DllSuffix>140</DllSuffix>
+			<DCC_DependencyCheckOutputName>C:\Users\Public\Documents\RAD Studio\7.0\Bpl\PngComponents140.bpl</DCC_DependencyCheckOutputName>
 			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
 			<DCC_Platform>x86</DCC_Platform>
 			<RuntimeOnlyPackage>true</RuntimeOnlyPackage>
@@ -37,7 +37,7 @@
 			<GenPackage>true</GenPackage>
 			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
 			<DCC_E>false</DCC_E>
-			<DCC_DcuOutput>..\D12</DCC_DcuOutput>
+			<DCC_DcuOutput>..\D14</DCC_DcuOutput>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1)'!=''">
 			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>

@@ -66,7 +66,7 @@ object PngImageListEditorDlg: TPngImageListEditorDlg
         Top = 79
         Width = 140
         Height = 21
-        ItemHeight = 0
+        ItemHeight = 13
         TabOrder = 2
         OnChange = cmbBackgroundColorChange
         OnDblClick = cmbBackgroundColorDblClick
