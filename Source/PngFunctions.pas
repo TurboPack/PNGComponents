@@ -545,8 +545,10 @@ end;
 {$IF RTLVersion >= 20.0 }
 type
   TPNGObject = class(TPngImage);
-begin
+initialization
   TPicture.RegisterFileFormat('', '', TPNGObject);
+finalization
+  TPicture.UnregisterGraphicClass(TPNGObject);
 {$IFEND}
 end.
 
