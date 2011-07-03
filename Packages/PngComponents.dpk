@@ -23,7 +23,7 @@ package PngComponents;
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
 {$DESCRIPTION 'Png Components'}
-{$LIBSUFFIX '140'}
+{$LIBSUFFIX '150'}
 {$RUNONLY}
 {$IMPLICITBUILD ON}
 

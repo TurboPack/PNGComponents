@@ -4,7 +4,11 @@
 			<MainSource>PngComponentsDesign.dpk</MainSource>
 			<Config Condition="'$(Config)'==''">Release</Config>
 			<DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
-			<ProjectVersion>12.0</ProjectVersion>
+			<ProjectVersion>12.2</ProjectVersion>
+			<Basis>True</Basis>
+			<Platform>Win32</Platform>
+			<AppType>Package</AppType>
+			<FrameworkType>None</FrameworkType>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Basis' or '$(Base)'!=''">
 			<Base>true</Base>
@@ -23,7 +27,7 @@
 			<DesignOnlyPackage>true</DesignOnlyPackage>
 			<DCC_ImageBase>00400000</DCC_ImageBase>
 			<DCC_DebugInformation>false</DCC_DebugInformation>
-			<DllSuffix>140</DllSuffix>
+			<DllSuffix>150</DllSuffix>
 			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
 			<DCC_Platform>x86</DCC_Platform>
 			<DCC_DependencyCheckOutputName>C:\Users\Public\Documents\RAD Studio\7.0\Bpl\PngComponentsDesign140.bpl</DCC_DependencyCheckOutputName>
@@ -33,7 +37,7 @@
 			<DCC_K>false</DCC_K>
 			<GenDll>true</GenDll>
 			<DCC_S>false</DCC_S>
-			<DCC_DcuOutput>..\D14</DCC_DcuOutput>
+			<DCC_DcuOutput>..\D15</DCC_DcuOutput>
 			<GenPackage>true</GenPackage>
 			<DCC_F>false</DCC_F>
 			<DCC_E>false</DCC_E>
@@ -59,19 +63,20 @@
 			<DCCReference Include="..\Design\PngImageListEditor.pas">
 				<Form>PngImageListEditorDlg</Form>
 			</DCCReference>
-			<BuildConfiguration Include="Basis">
-				<Key>Base</Key>
-			</BuildConfiguration>
 			<BuildConfiguration Include="Debug">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
+			</BuildConfiguration>
+			<BuildConfiguration Include="Basis">
+				<Key>Base</Key>
 			</BuildConfiguration>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_1</Key>
 				<CfgParent>Base</CfgParent>
 			</BuildConfiguration>
 		</ItemGroup>
-		<Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')"/>
+		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')" Project="$(BDS)\Bin\CodeGear.Delphi.Targets"/>
+		<Import Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\8.0\UserTools.proj')" Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\8.0\UserTools.proj"/>
 		<ProjectExtensions>
 			<Borland.Personality>Delphi.Personality.12</Borland.Personality>
 			<Borland.ProjectType>Package</Borland.ProjectType>
@@ -80,11 +85,7 @@
 					<Source>
 						<Source Name="MainSource">PngComponentsDesign.dpk</Source>
 					</Source>
-					<Parameters>
-						<Parameters Name="UseLauncher">False</Parameters>
-						<Parameters Name="LoadAllSymbols">True</Parameters>
-						<Parameters Name="LoadUnspecifiedSymbols">False</Parameters>
-					</Parameters>
+					<Parameters/>
 					<VersionInfo>
 						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
 						<VersionInfo Name="AutoIncBuild">False</VersionInfo>
@@ -113,6 +114,9 @@
 						<VersionInfoKeys Name="Comments"/>
 					</VersionInfoKeys>
 				</Delphi.Personality>
+				<Platforms>
+					<Platform value="Win32">True</Platform>
+				</Platforms>
 			</BorlandProject>
 			<ProjectFileVersion>12</ProjectFileVersion>
 		</ProjectExtensions>

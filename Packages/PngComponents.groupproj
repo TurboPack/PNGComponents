@@ -21,19 +21,19 @@
 			<MSBuild Projects="PngComponents.dproj"/>
 		</Target>
 		<Target Name="PngComponents:Clean">
-			<MSBuild Targets="Clean" Projects="PngComponents.dproj"/>
+			<MSBuild Projects="PngComponents.dproj" Targets="Clean"/>
 		</Target>
 		<Target Name="PngComponents:Make">
-			<MSBuild Targets="Make" Projects="PngComponents.dproj"/>
+			<MSBuild Projects="PngComponents.dproj" Targets="Make"/>
 		</Target>
 		<Target Name="PngComponentsDesign">
 			<MSBuild Projects="PngComponentsDesign.dproj"/>
 		</Target>
 		<Target Name="PngComponentsDesign:Clean">
-			<MSBuild Targets="Clean" Projects="PngComponentsDesign.dproj"/>
+			<MSBuild Projects="PngComponentsDesign.dproj" Targets="Clean"/>
 		</Target>
 		<Target Name="PngComponentsDesign:Make">
-			<MSBuild Targets="Make" Projects="PngComponentsDesign.dproj"/>
+			<MSBuild Projects="PngComponentsDesign.dproj" Targets="Make"/>
 		</Target>
 		<Target Name="Build">
 			<CallTarget Targets="PngComponents;PngComponentsDesign"/>
@@ -44,5 +44,5 @@
 		<Target Name="Make">
 			<CallTarget Targets="PngComponents:Make;PngComponentsDesign:Make"/>
 		</Target>
-		<Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+		<Import Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')" Project="$(BDS)\Bin\CodeGear.Group.Targets"/>
 	</Project>
