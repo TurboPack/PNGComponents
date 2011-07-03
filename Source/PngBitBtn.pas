@@ -200,6 +200,16 @@ begin
   if Length(Caption) > 0 then begin
     PaintRect := Rect(TextPos.X, TextPos.Y, Width, Height);
     FCanvas.Brush.Style := bsClear;
+    //grayed Caption when disabled
+    if not Enabled then begin
+      OffsetRect(PaintRect, 1, 1);
+      FCanvas.Font.Color := clBtnHighlight;
+      DrawText(FCanvas.Handle, PChar(Caption), -1, PaintRect,
+        DrawTextBiDiModeFlags(0) or DT_TOP or DT_LEFT or DT_SINGLELINE);
+      OffsetRect(PaintRect, -1, -1);
+      FCanvas.Font.Color := clBtnShadow;
+    end;
+
     DrawText(FCanvas.Handle, PChar(Caption), -1, PaintRect,
       DrawTextBiDiModeFlags(0) or DT_TOP or DT_LEFT or DT_SINGLELINE);
   end;
