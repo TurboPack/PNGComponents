@@ -39,6 +39,18 @@ implementation
 uses
   ActnList, Themes, PngButtonFunctions;
 
+{$IF RTLVersion < 23.0 }
+type
+  TThemeServices = class(Themes.TThemeServices)
+    property Enabled: Boolean read ThemesEnabled;
+  end;
+
+function StyleServices: TThemeServices;
+begin
+  result := ThemeServices;
+end;
+{$IFEND}
+
 { TPngBitBtn }
 
 constructor TPngBitBtn.Create(AOwner: TComponent);
@@ -132,7 +144,7 @@ begin
   IsDefault := Message.DrawItemStruct^.itemState and ODS_FOCUS <> 0;
 
   //Draw the border
-  if ThemeServices.ThemesEnabled then begin
+  if StyleServices.Enabled then begin
     //Themed border
     if not Enabled then
       Button := tbPushButtonDisabled
@@ -146,10 +158,10 @@ begin
       Button := tbPushButtonNormal;
 
     //Paint the background, border, and finally get the inner rect
-    Details := ThemeServices.GetElementDetails(Button);
-    ThemeServices.DrawParentBackground(Handle, Message.DrawItemStruct.hDC, @Details, True);
-    ThemeServices.DrawElement(Message.DrawItemStruct.hDC, Details, Message.DrawItemStruct.rcItem);
-    R := ThemeServices.ContentRect(FCanvas.Handle, Details, Message.DrawItemStruct.rcItem);
+    Details := StyleServices.GetElementDetails(Button);
+    StyleServices.DrawParentBackground(Handle, Message.DrawItemStruct.hDC, @Details, True);
+    StyleServices.DrawElement(Message.DrawItemStruct.hDC, Details, Message.DrawItemStruct.rcItem);
+    StyleServices.GetElementContentRect(FCanvas.Handle, Details, Message.DrawItemStruct.rcItem, R);
   end
   else begin
     //Draw the outer border, when focused
@@ -216,7 +228,7 @@ begin
 
   //Draw the focus rectangle
   if IsFocused and IsDefault then begin
-    if not ThemeServices.ThemesEnabled then begin
+    if not StyleServices.Enabled then begin
       R := ClientRect;
       InflateRect(R, -3, -3);
     end;
@@ -232,7 +244,7 @@ end;
 procedure TPngBitBtn.CMMouseEnter(var Message: TMessage);
 begin
   inherited;
-  if ThemeServices.ThemesEnabled and not FMouseInControl and not (csDesigning in ComponentState) then begin
+  if StyleServices.Enabled and not FMouseInControl and not (csDesigning in ComponentState) then begin
     FMouseInControl := True;
     Repaint;
   end;
@@ -241,7 +253,7 @@ end;
 procedure TPngBitBtn.CMMouseLeave(var Message: TMessage);
 begin
   inherited;
-  if ThemeServices.ThemesEnabled and FMouseInControl then begin
+  if StyleServices.Enabled and FMouseInControl then begin
     FMouseInControl := False;
     Repaint;
   end;
