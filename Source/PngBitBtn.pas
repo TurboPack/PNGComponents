@@ -41,9 +41,26 @@ uses
 
 {$IF RTLVersion < 23.0 }
 type
-  TThemeServices = class(Themes.TThemeServices)
-    property Enabled: Boolean read ThemesEnabled;
+  TThemeServicesHelper = class helper for TThemeServices
+  private
+    function GetEnabled: Boolean;
+  public
+    function GetElementContentRect(DC: HDC; Details: TThemedElementDetails; const BoundingRect: TRect;
+        out ContentRect: TRect): Boolean; overload;
+    property Enabled: Boolean read GetEnabled;
   end;
+
+function TThemeServicesHelper.GetElementContentRect(DC: HDC; Details: TThemedElementDetails; const BoundingRect: TRect;
+    out ContentRect: TRect): Boolean;
+begin
+  ContentRect := Self.ContentRect(DC, Details, BoundingRect);
+  Result := true;
+end;
+
+function TThemeServicesHelper.GetEnabled: Boolean;
+begin
+  Result := ThemesEnabled;
+end;
 
 function StyleServices: TThemeServices;
 begin
