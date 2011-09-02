@@ -1,0 +1,9 @@
+syntax: glob
+D12
+D14
+D15
+D16
+*.local
+*.identcache
+*.~*
+PngComponents.zip

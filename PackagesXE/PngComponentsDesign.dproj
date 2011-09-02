@@ -1,14 +1,14 @@
 ﻿	<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 		<PropertyGroup>
-			<ProjectGuid>{B3C4180B-520B-41C8-8853-0351F059AA78}</ProjectGuid>
+			<ProjectGuid>{F88AD664-DD5E-4382-B16A-AC5E8A6336D4}</ProjectGuid>
 			<MainSource>PngComponentsDesign.dpk</MainSource>
-			<Config Condition="'$(Config)'==''">Release</Config>
-			<DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
-			<ProjectVersion>12.3</ProjectVersion>
 			<Basis>True</Basis>
+			<Config Condition="'$(Config)'==''">Release</Config>
 			<Platform>Win32</Platform>
 			<AppType>Package</AppType>
 			<FrameworkType>None</FrameworkType>
+			<DCC_DCCCompiler>DCC32</DCC_DCCCompiler>
+			<ProjectVersion>12.3</ProjectVersion>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Config)'=='Basis' or '$(Base)'!=''">
 			<Base>true</Base>
@@ -24,32 +24,30 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
-			<DesignOnlyPackage>true</DesignOnlyPackage>
-			<DCC_ImageBase>00400000</DCC_ImageBase>
-			<DCC_DebugInformation>false</DCC_DebugInformation>
 			<DllSuffix>150</DllSuffix>
-			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
-			<DCC_Platform>x86</DCC_Platform>
-			<DCC_DependencyCheckOutputName>C:\Users\Public\Documents\RAD Studio\7.0\Bpl\PngComponentsDesign140.bpl</DCC_DependencyCheckOutputName>
-			<DCC_Description>Png components designtime</DCC_Description>
+			<DesignOnlyPackage>true</DesignOnlyPackage>
 			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+			<DCC_DebugInformation>false</DCC_DebugInformation>
+			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+			<DCC_UnitAlias>WinTypes=Windows;WinProcs=Windows;DbiTypes=BDE;DbiProcs=BDE;DbiErrs=BDE;WinTypes=Windows;WinProcs=Windows;$(DCC_UnitAlias)</DCC_UnitAlias>
+			<DCC_ImageBase>00400000</DCC_ImageBase>
+			<DCC_Description>Png components designtime</DCC_Description>
 			<DCC_N>false</DCC_N>
 			<DCC_K>false</DCC_K>
 			<GenDll>true</GenDll>
 			<DCC_S>false</DCC_S>
-			<DCC_DcuOutput>..\D15</DCC_DcuOutput>
+			<DCC_DcuOutput>..\D15\$(Config)</DCC_DcuOutput>
 			<GenPackage>true</GenPackage>
 			<DCC_F>false</DCC_F>
 			<DCC_E>false</DCC_E>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1)'!=''">
-			<DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
 			<DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
-			<DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
-			<DCC_DebugInformation>false</DCC_DebugInformation>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
 			<DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+			<DCC_Optimize>false</DCC_Optimize>
+			<DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
 		</PropertyGroup>
 		<ItemGroup>
 			<DelphiCompile Include="PngComponentsDesign.dpk">
@@ -85,7 +83,6 @@
 					<Source>
 						<Source Name="MainSource">PngComponentsDesign.dpk</Source>
 					</Source>
-					<Parameters/>
 					<VersionInfo>
 						<VersionInfo Name="IncludeVerInfo">True</VersionInfo>
 						<VersionInfo Name="AutoIncBuild">False</VersionInfo>

@@ -1,87 +1,32 @@
 ﻿[Closed Files]
-File_0=TSourceModule,'c:\program files (x86)\embarcadero\rad studio\7.0\SOURCE\WIN32\VCL\Controls.pas',0,1,2481,35,2505,0,0,,
-File_1=TSourceModule,'T:\Library\IPCommon\Source\Regbtn.pas',0,1,30,35,29,0,0,,
-File_2=TSourceModule,'c:\program files (x86)\embarcadero\rad studio\7.0\SOURCE\WIN32\VCL\Buttons.pas',0,1,1136,20,1151,0,0,,
-File_3=TSourceModule,'c:\program files (x86)\embarcadero\rad studio\7.0\SOURCE\WIN32\VCL\Themes.pas',0,1,338,3,371,0,0,,
-File_4=TSourceModule,'c:\program files (x86)\embarcadero\rad studio\7.0\source\Win32\rtl\win\Windows.pas',0,1,32348,1,32348,0,0,,
-File_5=TSourceModule,'c:\program files (x86)\embarcadero\rad studio\7.0\SOURCE\WIN32\VCL\ExtCtrls.pas',0,1,4278,1,4283,0,0,,
-File_6=TSourceModule,'T:\DelphLib\TpOrpheus\407\source\ovcsc.pas',0,1,204,5,204,0,0,,
-File_7=TSourceModule,'c:\program files (x86)\embarcadero\rad studio\7.0\SOURCE\WIN32\VCL\Forms.pas',0,1,128,38,130,0,0,,
-File_8=TSourceModule,'T:\DelphLib\TpOrpheus\407\source\OvcBase.pas',0,1,1991,1,1997,0,0,,
-File_9=TSourceModule,'C:\Users\Uwe\Documents\RAD Studio\Projekte\Unit2.pas',0,1,1,25,7,0,0,,
-File_10=TSourceModule,'T:\Library\IPCommon\Source\RegBtn.rc',0,1,1,1,1,0,0,,
-File_11=TSourceModule,'T:\Library\IPCommon\PackagesD2010\RegBtn.rc',0,1,1,3,1,0,0,,
-File_12=TSourceModule,'c:\program files (x86)\embarcadero\rad studio\7.0\SOURCE\WIN32\VCL\Graphics.pas',0,1,3732,1,3752,0,0,,
-File_13=TSourceModule,'c:\program files (x86)\embarcadero\rad studio\7.0\SOURCE\WIN32\VCL\ActnList.pas',0,1,1,27,19,0,0,,
+File_0=TSourceModule,'c:\program files (x86)\embarcadero\rad studio\8.0\SOURCE\RTL\SYS\System.pas',0,1,7804,53,7832,0,0,,
+File_1=TSourceModule,'c:\program files (x86)\embarcadero\rad studio\8.0\source\rtl\common\Generics.Collections.pas',0,1,19,3,19,0,0,,
+File_2=TSourceModule,'c:\program files (x86)\embarcadero\rad studio\8.0\source\rtl\common\DateUtils.pas',0,1,1522,1,1526,0,0,,
+File_3=TSourceModule,'c:\program files (x86)\embarcadero\rad studio\8.0\source\rtl\common\Generics.Defaults.pas',0,1,10,73,29,0,0,,
+File_4=TSourceModule,'c:\program files (x86)\embarcadero\rad studio\8.0\SOURCE\VCL\StdCtrls.pas',0,1,2419,1,2421,0,0,,
+File_5=TSourceModule,'c:\program files (x86)\embarcadero\rad studio\8.0\SOURCE\VCL\ActnList.pas',0,1,115,5,115,0,0,,
+File_6=TSourceModule,'c:\program files (x86)\embarcadero\rad studio\8.0\source\rtl\common\Classes.pas',0,1,7717,44,7730,0,0,,
+File_7=TSourceModule,'C:\Users\Uwe\Documents\RAD Studio\Projekte\Unit83.pas',0,1,1,1,32,0,0,,{7
+File_8=TSourceModule,'C:\Users\Uwe\Documents\RAD Studio\Projekte\Unit82.pas',0,1,1,29,33,0,0,,{7
+File_9=TSourceModule,'C:\Users\Uwe\Documents\RAD Studio\Projekte\Unit84.pas',0,1,1,5,15,0,0,,{7
+File_10=TSourceModule,'C:\Users\Uwe\Documents\RAD Studio\Projekte\Unit83.dfm',0,1,1,1,1,0,0,,
+File_11=TSourceModule,'c:\program files (x86)\embarcadero\rad studio\8.0\SOURCE\RTL\SYS\SysUtils.pas',0,1,18048,1,18054,0,0,,
+File_12=TSourceModule,'C:\develop\prj\Kiln\TwinCAM_V8\TwinCAM\Source\Common\IpFrames.pas',0,1,1,1,1,0,0,,
+File_13=TSourceModule,'C:\develop\prj\Kiln\TwinCAM_V8\TwinCAM\Source\TwinDoc\RSimpleGraphic.pas',0,1,1,16,1,0,0,,
+File_14=TSourceModule,'C:\develop\prj\Kiln\TwinCAM_V8\TwinCAM\Source\Items\TcItemVisitorDrawers.pas',0,1,169,14,186,0,0,,
 
 [Modules]
-Module0=T:\LibraryKiln\PngComponents\Source\PngBitBtn.pas
-Module1=c:\program files (x86)\embarcadero\rad studio\8.0\SOURCE\VCL\Themes.pas
-Module2=c:\program files (x86)\embarcadero\rad studio\7.0\SOURCE\WIN32\VCL\ImgList.pas
-Module3=default.htm
-Module4=T:\Library\PngComponents\Source\PngImageList.pas
-Module5=c:\program files (x86)\embarcadero\rad studio\8.0\SOURCE\VCL\Controls.pas
-Module6=T:\Library\PngComponents\Design\PngComponentEditors.pas
-Module7=c:\program files (x86)\embarcadero\rad studio\7.0\SOURCE\WIN32\VCL\pngimage.pas
-Module8=T:\Library\PngComponents\Source\PngFunctions.pas
-Count=9
+Module0=default.htm
+Count=1
 EditWindowCount=1
-
-[T:\LibraryKiln\PngComponents\Source\PngBitBtn.pas]
-ModuleType=TSourceModule
-FormState=0
-FormOnTop=0
-
-[c:\program files (x86)\embarcadero\rad studio\8.0\SOURCE\VCL\Themes.pas]
-ModuleType=TSourceModule
-FormState=0
-FormOnTop=0
-
-[c:\program files (x86)\embarcadero\rad studio\7.0\SOURCE\WIN32\VCL\ImgList.pas]
-ModuleType=TSourceModule
-FormState=0
-FormOnTop=0
 
 [default.htm]
 ModuleType=TURLModule
 
-[T:\Library\PngComponents\Source\PngImageList.pas]
-ModuleType=TSourceModule
-FormState=0
-FormOnTop=0
-
-[c:\program files (x86)\embarcadero\rad studio\8.0\SOURCE\VCL\Controls.pas]
-ModuleType=TSourceModule
-FormState=0
-FormOnTop=0
-
-[T:\Library\PngComponents\Design\PngComponentEditors.pas]
-ModuleType=TSourceModule
-FormState=0
-FormOnTop=0
-
-[c:\program files (x86)\embarcadero\rad studio\7.0\SOURCE\WIN32\VCL\pngimage.pas]
-ModuleType=TSourceModule
-FormState=0
-FormOnTop=0
-
-[T:\Library\PngComponents\Source\PngFunctions.pas]
-ModuleType=TSourceModule
-FormState=0
-FormOnTop=0
-
 [EditWindow0]
-ViewCount=9
-CurrentEditView=T:\LibraryKiln\PngComponents\Source\PngBitBtn.pas
+ViewCount=1
+CurrentView=0
 View0=0
-View1=1
-View2=2
-View3=3
-View4=4
-View5=5
-View6=6
-View7=7
-View8=8
 PercentageSizes=1
 Create=1
 Visible=1
@@ -98,7 +43,7 @@ ClientHeight=9248
 DockedToMainForm=1
 BorlandEditorCodeExplorer=BorlandEditorCodeExplorer@EditWindow0
 TopPanelSize=0
-LeftPanelSize=1964
+LeftPanelSize=1673
 LeftPanelClients=MIDEXForm
 LeftPanelData=00000800010000000000BF2200000000000000D50B0000000000000100000000BF220000090000004D49444558466F726DFFFFFFFF
 RightPanelSize=2000
@@ -115,94 +60,6 @@ TabDockLeftClients=DockSite3=0,PropertyInspector=1
 [View0]
 CustomEditViewType=TWelcomePageView
 WelcomePageURL=bds:/default.htm
-
-[View1]
-CustomEditViewType=TEditView
-Module=T:\Library\PngComponents\Source\PngImageList.pas
-CursorX=1
-CursorY=591
-TopLine=583
-LeftCol=1
-Elisions=
-Bookmarks=
-EditViewName=T:\Library\PngComponents\Source\PngImageList.pas
-
-[View2]
-CustomEditViewType=TEditView
-Module=c:\program files (x86)\embarcadero\rad studio\8.0\SOURCE\VCL\Controls.pas
-CursorX=31
-CursorY=2506
-TopLine=2488
-LeftCol=1
-Elisions=
-Bookmarks=
-EditViewName=c:\program files (x86)\embarcadero\rad studio\8.0\SOURCE\VCL\Controls.pas
-
-[View3]
-CustomEditViewType=TEditView
-Module=c:\program files (x86)\embarcadero\rad studio\7.0\SOURCE\WIN32\VCL\ImgList.pas
-CursorX=1
-CursorY=724
-TopLine=716
-LeftCol=1
-Elisions=
-Bookmarks=
-EditViewName=c:\program files (x86)\embarcadero\rad studio\7.0\SOURCE\WIN32\VCL\ImgList.pas
-
-[View4]
-CustomEditViewType=TEditView
-Module=T:\LibraryKiln\PngComponents\Source\PngBitBtn.pas
-CursorX=26
-CursorY=49
-TopLine=210
-LeftCol=1
-Elisions=
-Bookmarks={7,50,1}
-EditViewName=T:\LibraryKiln\PngComponents\Source\PngBitBtn.pas
-
-[View5]
-CustomEditViewType=TEditView
-Module=c:\program files (x86)\embarcadero\rad studio\8.0\SOURCE\VCL\Themes.pas
-CursorX=1
-CursorY=680
-TopLine=677
-LeftCol=1
-Elisions=
-Bookmarks=
-EditViewName=c:\program files (x86)\embarcadero\rad studio\8.0\SOURCE\VCL\Themes.pas
-
-[View6]
-CustomEditViewType=TEditView
-Module=T:\Library\PngComponents\Source\PngFunctions.pas
-CursorX=14
-CursorY=435
-TopLine=402
-LeftCol=1
-Elisions=
-Bookmarks=
-EditViewName=T:\Library\PngComponents\Source\PngFunctions.pas
-
-[View7]
-CustomEditViewType=TEditView
-Module=c:\program files (x86)\embarcadero\rad studio\7.0\SOURCE\WIN32\VCL\pngimage.pas
-CursorX=1
-CursorY=503
-TopLine=479
-LeftCol=1
-Elisions=
-Bookmarks=
-EditViewName=c:\program files (x86)\embarcadero\rad studio\7.0\SOURCE\WIN32\VCL\pngimage.pas
-
-[View8]
-CustomEditViewType=TEditView
-Module=T:\Library\PngComponents\Design\PngComponentEditors.pas
-CursorX=1
-CursorY=173
-TopLine=172
-LeftCol=1
-Elisions=
-Bookmarks=
-EditViewName=T:\Library\PngComponents\Design\PngComponentEditors.pas
 
 [Watches]
 Count=0
@@ -317,8 +174,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=-1241
-Top=-14
+Left=-1344
+Top=-101
 Width=2845
 Height=6208
 MaxLeft=-1
@@ -337,7 +194,7 @@ Visible=0
 Docked=1
 State=0
 Left=-1512
-Top=259
+Top=-101
 Width=274
 Height=356
 MaxLeft=-1
@@ -503,19 +360,19 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=1
-Top=24
+Left=0
+Top=0
 Width=1893
-Height=7465
+Height=9000
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=1893
-ClientHeight=7465
+ClientHeight=9000
 TBDockHeight=9000
 LRDockWidth=1893
 Dockable=1
 StayOnTop=0
-SplitPos=115
+SplitPos=109
 
 [DataExplorer]
 PercentageSizes=1
@@ -526,11 +383,11 @@ State=0
 Left=0
 Top=0
 Width=2000
-Height=4347
+Height=8752
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=4347
+ClientHeight=8752
 TBDockHeight=4881
 LRDockWidth=7149
 Dockable=1
@@ -545,11 +402,11 @@ State=0
 Left=0
 Top=0
 Width=2000
-Height=4347
+Height=8752
 MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
-ClientHeight=4347
+ClientHeight=8752
 TBDockHeight=4881
 LRDockWidth=5304
 Dockable=1
@@ -561,8 +418,8 @@ Create=1
 Visible=0
 Docked=1
 State=0
-Left=-182
-Top=-99
+Left=-8
+Top=-26
 Width=1845
 Height=3149
 MaxLeft=-1
@@ -665,38 +522,19 @@ Docked=1
 State=0
 Left=0
 Top=23
-Width=1964
+Width=1673
 Height=7485
 MaxLeft=-1
 MaxTop=-1
-ClientWidth=1964
+ClientWidth=1673
 ClientHeight=7485
 TBDockHeight=7416
-LRDockWidth=1964
+LRDockWidth=1673
 Dockable=1
 StayOnTop=0
 Layout=0
 Split=141
 ContentsClosed=0
-
-[DocumentationView]
-PercentageSizes=1
-Create=1
-Visible=0
-Docked=1
-State=0
-Left=-1344
-Top=-101
-Width=2720
-Height=3475
-MaxLeft=-1
-MaxTop=-1
-ClientWidth=2720
-ClientHeight=3475
-TBDockHeight=3475
-LRDockWidth=2720
-Dockable=1
-StayOnTop=1
 
 [Item__6A6C0F8B_01A1_4681_BE6C_415858C81E8F_]
 PercentageSizes=1
@@ -831,7 +669,7 @@ LRDockWidth=3137
 Dockable=1
 StayOnTop=0
 
-[Item__C74C7DBB_4D99_4FF4_BABE_F02A005254E6_]
+[Item__CE401FF6_F956_4BDB_9F54_088BD85F0CF4_]
 PercentageSizes=1
 Create=1
 Visible=0
@@ -850,7 +688,7 @@ LRDockWidth=3137
 Dockable=1
 StayOnTop=0
 
-[Item__CE401FF6_F956_4BDB_9F54_088BD85F0CF4_]
+[Item__C74C7DBB_4D99_4FF4_BABE_F02A005254E6_]
 PercentageSizes=1
 Create=1
 Visible=0
@@ -924,7 +762,7 @@ Visible=0
 Docked=1
 State=0
 Left=0
-Top=23
+Top=0
 Width=3827
 Height=1277
 MaxLeft=-1
@@ -961,7 +799,7 @@ Dockable=1
 StayOnTop=0
 TabPosition=1
 ActiveTabID=ProjectManager
-TabDockClients=ProjectManager,ModelViewTool,DataExplorer,TFileExplorerForm,DocumentationView
+TabDockClients=ProjectManager,ModelViewTool,DataExplorer,TFileExplorerForm
 
 [DockSite3]
 HostDockSite=LeftDockTabSet
@@ -972,7 +810,7 @@ Visible=0
 Docked=1
 State=0
 Left=0
-Top=76
+Top=0
 Width=1893
 Height=9000
 MaxLeft=-1
@@ -1003,7 +841,7 @@ MaxLeft=-1
 MaxTop=-1
 ClientWidth=2000
 ClientHeight=2624
-TBDockHeight=7000
+TBDockHeight=9000
 LRDockWidth=2000
 Dockable=1
 StayOnTop=0

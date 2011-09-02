@@ -33,7 +33,7 @@ procedure SlicePNG(JoinedPNG: TPngImage; Columns, Rows: Integer; out SlicedPNGs:
 implementation
 
 uses
-  SysUtils, Classes, PngImageList;
+  SysUtils, PngImageList;
 
 function ColorToTriple(Color: TColor): TRGBTriple;
 var
