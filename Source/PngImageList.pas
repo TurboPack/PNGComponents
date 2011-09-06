@@ -130,8 +130,9 @@ type
   TMethodPatch = class
   private
     Name: string;
-    OldBody: array[0..5] of Byte;
-    OldPointer, NewPointer: Pointer;
+    OldBody: array[0..4] of Byte;
+    OldPointer: Pointer;
+    NewPointer: Pointer;
   public
     constructor Create;
     destructor Destroy; override;
@@ -155,19 +156,25 @@ begin
   end;
 end;
 
+{$POINTERMATH ON}
 function PatchPtr(OldPtr, NewPtr: Pointer; const Name: string; Patch: TMethodPatch): Boolean;
 var
   Access: Cardinal;
+  opCode: PByte;
+  operand: PInteger;
 begin
   Result := False;
   Patch.Name := Name;
   if OldPtr <> NewPtr then begin
     Patch.OldPointer := OldPtr;
     Patch.NewPointer := NewPtr;
-    Move(PByte(OldPtr)^, Patch.OldBody[0], SizeOf(Patch.OldBody));
+    opCode := OldPtr;
+    operand := OldPtr;
+    Inc(operand);
+    Move(opCode^, Patch.OldBody[0], SizeOf(Patch.OldBody));
     if VirtualProtect(OldPtr, 16, PAGE_EXECUTE_READWRITE, @Access) then begin
-      PByte(OldPtr)^ := $E9; // Near jump
-      PCardinal(Cardinal(OldPtr) + 1)^ := Cardinal(NewPtr) - Cardinal(OldPtr) - 5;
+      opCode^ := $E9; // Near jump
+      operand^ := PByte(NewPtr) - PByte(OldPtr) - 5;
       VirtualProtect(OldPtr, 16, Access, @Access);
       Result := True;
     end;
@@ -175,15 +182,17 @@ begin
   if not Result then
     Patch.OldPointer := nil;
 end;
+{$POINTERMATH OFF}
 
 procedure ApplyMethodPatches;
 type
   TPointerCombo = record
-    OldPtr, NewPtr: Pointer;
+    OldPtr: Pointer;
+    NewPtr: Pointer;
     Name: string;
   end;
 
-  function Combo(OldPtr, NewPtr: Pointer; const Name: string): TPointerCombo;
+  function Combo(const OldPtr, NewPtr: Pointer; const Name: string): TPointerCombo;
   begin
     Result.OldPtr := OldPtr;
     Result.NewPtr := NewPtr;
