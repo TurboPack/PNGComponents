@@ -7,3 +7,7 @@ D16
 *.identcache
 *.~*
 PngComponents.zip
+*.dsk
+*.tvsconfig
+Win32
+Win64

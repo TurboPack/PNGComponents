@@ -160,6 +160,7 @@ end;
 function PatchPtr(OldPtr, NewPtr: Pointer; const Name: string; Patch: TMethodPatch): Boolean;
 var
   Access: Cardinal;
+  memSize: Integer;
   opCode: PByte;
   operand: PInteger;
 begin
@@ -171,11 +172,15 @@ begin
     opCode := OldPtr;
     operand := OldPtr;
     Inc(operand);
-    Move(opCode^, Patch.OldBody[0], SizeOf(Patch.OldBody));
+    memSize := SizeOf(Patch.OldBody);
+    Move(opCode^, Patch.OldBody[0], memSize);
     if VirtualProtect(OldPtr, 16, PAGE_EXECUTE_READWRITE, @Access) then begin
       opCode^ := $E9; // Near jump
       operand^ := PByte(NewPtr) - PByte(OldPtr) - 5;
       VirtualProtect(OldPtr, 16, Access, @Access);
+      {$IF not (defined(CPU386) or defined(CPUX86) or defined(CPUX64)) }
+      FlushInstructionCache(GetCurrentProcess, OldPtr, memSize);
+      {$IFEND}
       Result := True;
     end;
   end;
