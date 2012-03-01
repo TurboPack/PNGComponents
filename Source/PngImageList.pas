@@ -130,7 +130,7 @@ type
   TMethodPatch = class
   private
     Name: string;
-    OldBody: array[0..4] of Byte;
+    OldBody: packed array[0..4] of Byte;
     OldPointer: Pointer;
     NewPointer: Pointer;
   public
@@ -171,16 +171,16 @@ begin
     Patch.NewPointer := NewPtr;
     opCode := OldPtr;
     operand := OldPtr;
-    Inc(operand);
+    Inc(PByte(operand));
     memSize := SizeOf(Patch.OldBody);
     Move(opCode^, Patch.OldBody[0], memSize);
     if VirtualProtect(OldPtr, 16, PAGE_EXECUTE_READWRITE, @Access) then begin
       opCode^ := $E9; // Near jump
       operand^ := PByte(NewPtr) - PByte(OldPtr) - 5;
-      VirtualProtect(OldPtr, 16, Access, @Access);
-      {$IF not (defined(CPU386) or defined(CPUX86) or defined(CPUX64)) }
-      FlushInstructionCache(GetCurrentProcess, OldPtr, memSize);
-      {$IFEND}
+      Result := VirtualProtect(OldPtr, 16, Access, @Access);
+//      {$IF not (defined(CPU386) or defined(CPUX86) or defined(CPUX64)) }
+//      FlushInstructionCache(GetCurrentProcess, OldPtr, memSize);
+//      {$IFEND}
       Result := True;
     end;
   end;
