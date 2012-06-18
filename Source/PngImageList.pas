@@ -177,7 +177,7 @@ begin
     if VirtualProtect(OldPtr, 16, PAGE_EXECUTE_READWRITE, @Access) then begin
       opCode^ := $E9; // Near jump
       operand^ := PByte(NewPtr) - PByte(OldPtr) - 5;
-      Result := VirtualProtect(OldPtr, 16, Access, @Access);
+      VirtualProtect(OldPtr, 16, Access, @Access);
 //      {$IF not (defined(CPU386) or defined(CPUX86) or defined(CPUX64)) }
 //      FlushInstructionCache(GetCurrentProcess, OldPtr, memSize);
 //      {$IFEND}
