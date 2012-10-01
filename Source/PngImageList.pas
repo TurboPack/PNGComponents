@@ -21,6 +21,8 @@ type
     FLocked: Integer;
     FPngImages: TPngImageCollectionItems;
     FPngOptions: TPngOptions;
+  class var
+    FIDE_WriteData_Hack: Boolean;
     function GetHeight: Integer;
     function GetWidth: Integer;
     procedure SetHeight(const Value: Integer);
@@ -61,6 +63,8 @@ type
     procedure Replace(Index: Integer; Image, Mask: TBitmap); virtual;
     procedure ReplaceIcon(Index: Integer; Image: TIcon); virtual;
     procedure ReplaceMasked(Index: Integer; NewImage: TBitmap; MaskColor: TColor); virtual;
+    class property IDE_WriteData_Hack: Boolean read FIDE_WriteData_Hack write
+        FIDE_WriteData_Hack;
   published
     property EnabledImages: Boolean read FEnabledImages write SetEnabledImages default True;
     property Height read GetHeight write SetHeight default 16;
@@ -974,6 +978,8 @@ end;
 
 procedure TPngImageList.ReadData(Stream: TStream);
 begin
+//  if not (csReading in ComponentState) then
+//    inherited;
   //Make sure nothing gets read from the DFM
 end;
 
@@ -1127,6 +1133,8 @@ end;
 
 procedure TPngImageList.WriteData(Stream: TStream);
 begin
+  if IDE_WriteData_Hack and not (csWriting in ComponentState) then
+    inherited;
   //Make sure nothing gets written to the DFM
 end;
 
