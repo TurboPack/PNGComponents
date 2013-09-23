@@ -21,19 +21,19 @@
 			<MSBuild Projects="PngComponents.dproj"/>
 		</Target>
 		<Target Name="PngComponents:Clean">
-			<MSBuild Projects="PngComponents.dproj" Targets="Clean"/>
+			<MSBuild Targets="Clean" Projects="PngComponents.dproj"/>
 		</Target>
 		<Target Name="PngComponents:Make">
-			<MSBuild Projects="PngComponents.dproj" Targets="Make"/>
+			<MSBuild Targets="Make" Projects="PngComponents.dproj"/>
 		</Target>
 		<Target Name="PngComponentsDesign">
 			<MSBuild Projects="PngComponentsDesign.dproj"/>
 		</Target>
 		<Target Name="PngComponentsDesign:Clean">
-			<MSBuild Projects="PngComponentsDesign.dproj" Targets="Clean"/>
+			<MSBuild Targets="Clean" Projects="PngComponentsDesign.dproj"/>
 		</Target>
 		<Target Name="PngComponentsDesign:Make">
-			<MSBuild Projects="PngComponentsDesign.dproj" Targets="Make"/>
+			<MSBuild Targets="Make" Projects="PngComponentsDesign.dproj"/>
 		</Target>
 		<Target Name="Build">
 			<CallTarget Targets="PngComponents;PngComponentsDesign"/>
