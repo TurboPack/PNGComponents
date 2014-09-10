@@ -24,16 +24,16 @@ type
 procedure MakeImageBlended(Image: TPngImage; Amount: Byte = 127);
 procedure MakeImageGrayscale(Image: TPngImage; Amount: Byte = 255);
 procedure DrawPNG(Png: TPngImage; Canvas: TCanvas; const ARect: TRect; const Options: TPngOptions);
-procedure ConvertToPNG(Source: TGraphic; out Dest: TPngImage);
-procedure CreatePNG(Color, Mask: TBitmap; out Dest: TPngImage; InverseMask: Boolean = False);
-procedure CreatePNGMasked(Bitmap: TBitmap; Mask: TColor; out Dest: TPngImage);
+procedure ConvertToPNG(Source: TGraphic; Dest: TPngImage);
+procedure CreatePNG(Color, Mask: TBitmap; Dest: TPngImage; InverseMask: Boolean = False);
+procedure CreatePNGMasked(Bitmap: TBitmap; Mask: TColor; Dest: TPngImage);
 procedure CopyImageFromImageList(Dest: TPngImage; ImageList: TCustomImageList; Index: Integer);
 procedure SlicePNG(JoinedPNG: TPngImage; Columns, Rows: Integer; out SlicedPNGs: TObjectList);
 
 implementation
 
 uses
-  SysUtils, PngImageList, classes;
+  SysUtils, PngImageList;
 
 function ColorToTriple(Color: TColor): TRGBTriple;
 var
@@ -181,7 +181,7 @@ begin
   end;
 end;
 
-procedure ConvertToPNG(Source: TGraphic; out Dest: TPngImage);
+procedure ConvertToPNG(Source: TGraphic; Dest: TPngImage);
 var
   MaskLines: array of pngimage.PByteArray;
 
@@ -275,9 +275,9 @@ var
   IconInfo: TIconInfo;
   AlphaNeeded: Boolean;
 begin
+  Assert(Dest <> nil, 'Dest is nil!');
   //A PNG does not have to be converted
   if Source is TPngImage then begin
-    Dest := TPngImage.Create;
     Dest.Assign(Source);
     Exit;
   end;
@@ -354,8 +354,7 @@ begin
       end;
     end;
 
-    //And finally, create the destination PNG image
-    Dest := TPngImage.Create;
+    //And finally, assign the destination PNG image
     Dest.Assign(Temp);
     if AlphaNeeded then begin
       Dest.CreateAlpha;
@@ -372,15 +371,15 @@ begin
   end;
 end;
 
-procedure CreatePNG(Color, Mask: TBitmap; out Dest: TPngImage; InverseMask: Boolean = False);
+procedure CreatePNG(Color, Mask: TBitmap; Dest: TPngImage; InverseMask: Boolean = False);
 var
   Temp: TBitmap;
   Line: pngimage.PByteArray;
   X, Y: Integer;
 begin
+  Assert(Dest <> nil, 'Dest is nil!');
   //Create a PNG from two separate color and mask bitmaps. InverseMask should be
   //True if white means transparent, and black means opaque.
-  Dest := TPngImage.Create;
   if not (Color.PixelFormat in [pf24bit, pf32bit]) then begin
     Temp := TBitmap.Create;
     try
@@ -408,15 +407,15 @@ begin
   end;
 end;
 
-procedure CreatePNGMasked(Bitmap: TBitmap; Mask: TColor; out Dest: TPngImage);
+procedure CreatePNGMasked(Bitmap: TBitmap; Mask: TColor; Dest: TPngImage);
 var
   Temp: TBitmap;
   Line: pngimage.PByteArray;
   X, Y: Integer;
 begin
+  Assert(Dest <> nil, 'Dest is nil!');
   //Create a PNG from two separate color and mask bitmaps. InverseMask should be
   //True if white means transparent, and black means opaque.
-  Dest := TPngImage.Create;
   if not (Bitmap.PixelFormat in [pf24bit, pf32bit]) then begin
     Temp := TBitmap.Create;
     try
