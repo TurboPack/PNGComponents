@@ -7,7 +7,7 @@ uses
 
 type
   TPngBitBtn = class(TBitBtn)
-{$IF RTLVersion >= 23.0 }
+{$IF RTLVersion >= 24.0 }
   strict private
     class constructor Create;
     class destructor Destroy;
@@ -39,7 +39,7 @@ type
     property NumGlyphs stored False;
   end;
 
-{$IF RTLVersion >= 23.0 }
+{$IF RTLVersion >= 24.0 }
   TPngBitBtnStyleHook = class(TBitBtnStyleHook)
   strict protected
     procedure DrawButton(ACanvas: TCanvas; AMouseInControl: Boolean); override;
@@ -82,7 +82,7 @@ end;
 
 { TPngBitBtn }
 
-{$IF RTLVersion >= 23.0 }
+{$IF RTLVersion >= 24.0 }
 class constructor TPngBitBtn.Create;
 begin
   TCustomStyleEngine.RegisterStyleHook(TPngBitBtn, TPngBitBtnStyleHook);
@@ -302,7 +302,7 @@ begin
 end;
 
 { TPngBitBtnStyleHook }
-{$IF RTLVersion >= 23.0 }
+{$IF RTLVersion >= 24.0 }
 procedure TPngBitBtnStyleHook.DrawButton(ACanvas: TCanvas;
   AMouseInControl: Boolean);
 const
