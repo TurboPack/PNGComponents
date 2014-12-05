@@ -323,6 +323,7 @@ begin
     inherited;
     Exit;
   end;
+  Offset := TPoint.Create(0, 0);
   DrawRect := Control.ClientRect;
   if FPressed then
     Details := StyleServices.GetElementDetails(tbPushButtonPressed)
