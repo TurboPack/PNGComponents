@@ -122,13 +122,20 @@ end;
 procedure MakeImageGrayscale(Image: TPngImage; Amount: Byte = 255);
 
   procedure GrayscaleRGB(var R, G, B: Byte);
+  { Performance optimized version without floating point operations by Christian Budde }
   var
     X: Byte;
   begin
+    X := (R * 77 + G * 150 + B * 29) shr 8;
+    R := ((R * (255 - Amount)) + (X * Amount) + 128) shr 8;
+    G := ((G * (255 - Amount)) + (X * Amount) + 128) shr 8;
+    B := ((B * (255 - Amount)) + (X * Amount) + 128) shr 8;
+    (* original code
     X := Round(R * 0.30 + G * 0.59 + B * 0.11);
     R := Round(R / 256 * (256 - Amount - 1)) + Round(X / 256 * (Amount + 1));
     G := Round(G / 256 * (256 - Amount - 1)) + Round(X / 256 * (Amount + 1));
     B := Round(B / 256 * (256 - Amount - 1)) + Round(X / 256 * (Amount + 1));
+    *)
   end;
 
 var
@@ -550,4 +557,3 @@ finalization
   TPicture.UnregisterGraphicClass(TPNGObject);
 {$IFEND}
 end.
-
