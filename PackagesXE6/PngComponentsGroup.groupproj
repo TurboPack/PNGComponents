@@ -9,6 +9,9 @@
         <Projects Include="PngComponentsDesign.dproj">
             <Dependencies/>
         </Projects>
+        <Projects Include="..\Tests\PngBtnTest\ProjectPngBtnTest.dproj">
+            <Dependencies/>
+        </Projects>
     </ItemGroup>
     <ProjectExtensions>
         <Borland.Personality>Default.Personality.12</Borland.Personality>
@@ -35,14 +38,23 @@
     <Target Name="PngComponentsDesign:Make">
         <MSBuild Projects="PngComponentsDesign.dproj" Targets="Make"/>
     </Target>
+    <Target Name="ProjectPngBtnTest">
+        <MSBuild Projects="..\Tests\PngBtnTest\ProjectPngBtnTest.dproj"/>
+    </Target>
+    <Target Name="ProjectPngBtnTest:Clean">
+        <MSBuild Projects="..\Tests\PngBtnTest\ProjectPngBtnTest.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ProjectPngBtnTest:Make">
+        <MSBuild Projects="..\Tests\PngBtnTest\ProjectPngBtnTest.dproj" Targets="Make"/>
+    </Target>
     <Target Name="Build">
-        <CallTarget Targets="PngComponents;PngComponentsDesign"/>
+        <CallTarget Targets="PngComponents;PngComponentsDesign;ProjectPngBtnTest"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="PngComponents:Clean;PngComponentsDesign:Clean"/>
+        <CallTarget Targets="PngComponents:Clean;PngComponentsDesign:Clean;ProjectPngBtnTest:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="PngComponents:Make;PngComponentsDesign:Make"/>
+        <CallTarget Targets="PngComponents:Make;PngComponentsDesign:Make;ProjectPngBtnTest:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
     <ItemGroup Condition="'$(BuildGroup)'=='Alles'">
@@ -57,6 +69,12 @@
             <Configurations>Debug;Release</Configurations>
             <Platforms>Win32</Platforms>
             <Enabled>True</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="..\Tests\PngBtnTest\ProjectPngBtnTest.dproj">
+            <ProjectGuid>{5F76A2CC-B3F9-45FC-A002-721128DD8F2C}</ProjectGuid>
+            <Configurations>Debug</Configurations>
+            <Platforms>Win32</Platforms>
+            <Enabled>False</Enabled>
         </BuildGroupProject>
     </ItemGroup>
 </Project>
