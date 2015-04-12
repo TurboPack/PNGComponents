@@ -309,8 +309,7 @@ const
   WordBreakFlag: array[Boolean] of Integer = (0, DT_WORDBREAK);
 var
   Details:  TThemedElementDetails;
-  DrawRect, PaintRect, R, TextRect: TRect;
-  Offset: TPoint;
+  DrawRect, PaintRect, TextRect: TRect;
   State: TButtonState;
   btn : TPngBitBtn;
   GlyphPos, TextPos: TPoint;
@@ -323,13 +322,11 @@ begin
     inherited;
     Exit;
   end;
-  Offset := TPoint.Create(0, 0);
-  DrawRect := Control.ClientRect;
   if FPressed then
     Details := StyleServices.GetElementDetails(tbPushButtonPressed)
   else if AMouseInControl then
     Details := StyleServices.GetElementDetails(tbPushButtonHot)
-  else if Focused then
+  else if Focused or TPngBitBtn(Control).Default then
     Details := StyleServices.GetElementDetails(tbPushButtonDefaulted)
   else if Control.Enabled then
     Details := StyleServices.GetElementDetails(tbPushButtonNormal)
@@ -343,7 +340,6 @@ begin
   if not btn.Enabled then State := bsDisabled
   else if FPressed then State := bsDown
   else State := bsUp;
-
 
   //Calculate the position of the PNG glyph
   CalcButtonLayout(ACanvas, btn.FPngImage, btn.ClientRect, FPressed, False, btn.Caption,
@@ -379,20 +375,8 @@ begin
     TextRect := Rect(0, 0, 0, 0);
   end;
 
-  OffsetRect(TextRect, TextPos.X + btn.ClientRect.Left + Offset.X, TextPos.Y + btn.ClientRect.Top + Offset.Y);
+  OffsetRect(TextRect, TextPos.X + btn.ClientRect.Left, TextPos.Y + btn.ClientRect.Top);
   StyleServices.DrawText(ACanvas.Handle, Details, btn.Caption, TextRect, LFormats, LColor);
-
-  //Draw the focus rectangle
-  if btn.IsFocused //and IsDefault
-    then begin
-    if not StyleServices.Enabled then begin
-      R := Control.ClientRect;
-      InflateRect(R, -3, -3);
-    end;
-    ACanvas.Pen.Color := clWindowFrame;
-    ACanvas.Brush.Color := clBtnFace;
-    DrawFocusRect(ACanvas.Handle, R);
-  end;
 
 end;
 {$IFEND}
