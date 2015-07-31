@@ -33,7 +33,7 @@ package PngComponentsDDesign;
 
 requires
   designide,
-  PngComponents;
+  PngComponentsD;
 
 contains
   PngComponentsRegister in '..\..\Design\PngComponentsRegister.pas',

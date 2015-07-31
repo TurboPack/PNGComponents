@@ -6,7 +6,7 @@
         <Projects Include="PngComponentsD.dproj">
             <Dependencies/>
         </Projects>
-        <Projects Include="PngComponentsDesign.dproj">
+        <Projects Include="PngComponentsDDesign.dproj">
             <Dependencies/>
         </Projects>
     </ItemGroup>
@@ -26,23 +26,23 @@
     <Target Name="PngComponentsD:Make">
         <MSBuild Projects="PngComponentsD.dproj" Targets="Make"/>
     </Target>
-    <Target Name="PngComponentsDesign">
-        <MSBuild Projects="PngComponentsDesign.dproj"/>
+    <Target Name="PngComponentsDDesign">
+        <MSBuild Projects="PngComponentsDDesign.dproj"/>
     </Target>
-    <Target Name="PngComponentsDesign:Clean">
-        <MSBuild Projects="PngComponentsDesign.dproj" Targets="Clean"/>
+    <Target Name="PngComponentsDDesign:Clean">
+        <MSBuild Projects="PngComponentsDDesign.dproj" Targets="Clean"/>
     </Target>
-    <Target Name="PngComponentsDesign:Make">
-        <MSBuild Projects="PngComponentsDesign.dproj" Targets="Make"/>
+    <Target Name="PngComponentsDDesign:Make">
+        <MSBuild Projects="PngComponentsDDesign.dproj" Targets="Make"/>
     </Target>
     <Target Name="Build">
-        <CallTarget Targets="PngComponentsD;PngComponentsDesign"/>
+        <CallTarget Targets="PngComponentsD;PngComponentsDDesign"/>
     </Target>
     <Target Name="Clean">
-        <CallTarget Targets="PngComponentsD:Clean;PngComponentsDesign:Clean"/>
+        <CallTarget Targets="PngComponentsD:Clean;PngComponentsDDesign:Clean"/>
     </Target>
     <Target Name="Make">
-        <CallTarget Targets="PngComponentsD:Make;PngComponentsDesign:Make"/>
+        <CallTarget Targets="PngComponentsD:Make;PngComponentsDDesign:Make"/>
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
     <ItemGroup Condition="'$(BuildGroup)'=='Alles'">
@@ -52,7 +52,7 @@
             <Platforms>Win32;Win64</Platforms>
             <Enabled>True</Enabled>
         </BuildGroupProject>
-        <BuildGroupProject Include="PngComponentsDesign.dproj">
+        <BuildGroupProject Include="PngComponentsDDesign.dproj">
             <ProjectGuid>{B3C4180B-520B-41C8-8853-0351F059AA78}</ProjectGuid>
             <Configurations>Debug;Release</Configurations>
             <Platforms>Win32</Platforms>
