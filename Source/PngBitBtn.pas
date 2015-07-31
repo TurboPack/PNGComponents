@@ -7,11 +7,9 @@ uses
 
 type
   TPngBitBtn = class(TBitBtn)
-{$IF RTLVersion >= 24.0 }
   strict private
     class constructor Create;
     class destructor Destroy;
-{$IFEND}
   private
     FPngImage: TPngImage;
     FPngOptions: TPngOptions;
@@ -39,50 +37,19 @@ type
     property NumGlyphs stored False;
   end;
 
-{$IF RTLVersion >= 24.0 }
   TPngBitBtnStyleHook = class(TBitBtnStyleHook)
   strict protected
     procedure DrawButton(ACanvas: TCanvas; AMouseInControl: Boolean); override;
   end;
-{$IFEND}
 
 implementation
 
 uses
   ActnList, Themes, PngButtonFunctions;
 
-{$IF RTLVersion < 23.0 }
-type
-  TThemeServicesHelper = class helper for TThemeServices
-  private
-    function GetEnabled: Boolean;
-  public
-    function GetElementContentRect(DC: HDC; Details: TThemedElementDetails; const BoundingRect: TRect;
-        out ContentRect: TRect): Boolean; overload;
-    property Enabled: Boolean read GetEnabled;
-  end;
-
-function TThemeServicesHelper.GetElementContentRect(DC: HDC; Details: TThemedElementDetails; const BoundingRect: TRect;
-    out ContentRect: TRect): Boolean;
-begin
-  ContentRect := Self.ContentRect(DC, Details, BoundingRect);
-  Result := true;
-end;
-
-function TThemeServicesHelper.GetEnabled: Boolean;
-begin
-  Result := ThemesEnabled;
-end;
-
-function StyleServices: TThemeServices;
-begin
-  result := ThemeServices;
-end;
-{$IFEND}
 
 { TPngBitBtn }
 
-{$IF RTLVersion >= 24.0 }
 class constructor TPngBitBtn.Create;
 begin
   TCustomStyleEngine.RegisterStyleHook(TPngBitBtn, TPngBitBtnStyleHook);
@@ -92,7 +59,6 @@ class destructor TPngBitBtn.Destroy;
 begin
   TCustomStyleEngine.UnRegisterStyleHook(TPngBitBtn, TPngBitBtnStyleHook);
 end;
-{$IFEND}
 
 constructor TPngBitBtn.Create(AOwner: TComponent);
 begin
@@ -302,7 +268,6 @@ begin
 end;
 
 { TPngBitBtnStyleHook }
-{$IF RTLVersion >= 24.0 }
 procedure TPngBitBtnStyleHook.DrawButton(ACanvas: TCanvas;
   AMouseInControl: Boolean);
 const
@@ -379,6 +344,5 @@ begin
   StyleServices.DrawText(ACanvas.Handle, Details, btn.Caption, TextRect, LFormats, LColor);
 
 end;
-{$IFEND}
 
 end.

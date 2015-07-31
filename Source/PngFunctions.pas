@@ -5,14 +5,6 @@ interface
 uses
   Windows, Graphics, ImgList, Contnrs, pngimage;
 
-{$IF RTLVersion < 20.0 }
-  {$IF RTLVersion < 15.0 }
-    PngComponents are only compatible with Delphi 7 and higher!
-  {$IFEND}
-type
-  TPngImage = TPNGObject;
-{$IFEND}
-
 type
   TPngOption = (pngBlendOnDisabled, pngGrayscaleOnDisabled);
   TPngOptions = set of TPngOption;
@@ -33,7 +25,7 @@ procedure SlicePNG(JoinedPNG: TPngImage; Columns, Rows: Integer; out SlicedPNGs:
 implementation
 
 uses
-  SysUtils, PngImageList;
+  SysUtils, Classes, PngImageList;
 
 function ColorToTriple(Color: TColor): TRGBTriple;
 var
@@ -548,12 +540,10 @@ begin
   end;
 end;
 
-{$IF RTLVersion >= 20.0 }
 type
   TPNGObject = class(TPngImage);
 initialization
   TPicture.RegisterFileFormat('', '', TPNGObject);
 finalization
   TPicture.UnregisterGraphicClass(TPNGObject);
-{$IFEND}
 end.

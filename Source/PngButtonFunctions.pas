@@ -3,12 +3,7 @@ unit PngButtonFunctions;
 interface
 
 uses
-  Windows, Buttons, Graphics, pngimage;
-
-{$IF RTLVersion < 20.0 }
-type
-  TPngImage = TPNGObject;
-{$IFEND}
+  Types, Windows, Buttons, Graphics, pngimage;
 
 procedure CalcButtonLayout(Canvas: TCanvas; PngImage: TPngImage; const Client:
   TRect; Pressed, Down: Boolean; const Caption: string; Layout: TButtonLayout;

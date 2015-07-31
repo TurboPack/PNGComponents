@@ -15,9 +15,7 @@ const
 
 procedure Register;
 begin
-  {$if CompilerVersion >= 24.0 }
-    TPngImageList.IDE_WriteData_Hack := true;
-  {$ifend}
+  TPngImageList.IDE_WriteData_Hack := true;
 
   //Register all components
   RegisterComponents(SPageName, [TPngSpeedButton, TPngBitBtn, TPngImageList,
