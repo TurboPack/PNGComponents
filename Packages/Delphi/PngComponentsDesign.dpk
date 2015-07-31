@@ -1,6 +1,7 @@
-package PngComponents;
+package PngComponentsDesign;
 
 {$R *.res}
+{$R '..\..\Design\PngComponents.dcr'}
 {$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
 {$ALIGN 8}
 {$ASSERTIONS ON}
@@ -23,24 +24,20 @@ package PngComponents;
 {$WRITEABLECONST OFF}
 {$MINENUMSIZE 1}
 {$IMAGEBASE $400000}
+{$DEFINE RELEASE}
 {$ENDIF IMPLICITBUILDING}
-{$DESCRIPTION 'Png Components'}
+{$DESCRIPTION 'Png components designtime'}
 {$LIBSUFFIX '220'}
-{$RUNONLY}
+{$DESIGNONLY}
 {$IMPLICITBUILD ON}
 
 requires
-  vclactnband,
-  vcl,
-  rtl,
-  vclimg;
+  designide,
+  PngComponents;
 
 contains
-  PngSpeedButton in '..\Source\PngSpeedButton.pas',
-  PngFunctions in '..\Source\PngFunctions.pas',
-  PngImageList in '..\Source\PngImageList.pas',
-  PngBitBtn in '..\Source\PngBitBtn.pas',
-  PngButtonFunctions in '..\Source\PngButtonFunctions.pas',
-  PngCheckListBox in '..\Source\PngCheckListBox.pas';
+  PngComponentsRegister in '..\..\Design\PngComponentsRegister.pas',
+  PngComponentEditors in '..\..\Design\PngComponentEditors.pas',
+  PngImageListEditor in '..\..\Design\PngImageListEditor.pas' {PngImageListEditorDlg};
 
 end.

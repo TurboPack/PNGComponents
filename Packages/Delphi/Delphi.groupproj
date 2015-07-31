@@ -1,0 +1,62 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{9829CB6A-45D8-43A8-AD5F-BEC254921B24}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="PngComponents.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="PngComponentsDesign.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="PngComponents">
+        <MSBuild Projects="PngComponents.dproj"/>
+    </Target>
+    <Target Name="PngComponents:Clean">
+        <MSBuild Projects="PngComponents.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="PngComponents:Make">
+        <MSBuild Projects="PngComponents.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="PngComponentsDesign">
+        <MSBuild Projects="PngComponentsDesign.dproj"/>
+    </Target>
+    <Target Name="PngComponentsDesign:Clean">
+        <MSBuild Projects="PngComponentsDesign.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="PngComponentsDesign:Make">
+        <MSBuild Projects="PngComponentsDesign.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="PngComponents;PngComponentsDesign"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="PngComponents:Clean;PngComponentsDesign:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="PngComponents:Make;PngComponentsDesign:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+    <ItemGroup Condition="'$(BuildGroup)'=='Alles'">
+        <BuildGroupProject Include="PngComponents.dproj">
+            <ProjectGuid>{A567FA24-8D23-4C0B-9AD6-102B2A1F6D0B}</ProjectGuid>
+            <Configurations>Debug;Release</Configurations>
+            <Platforms>Win32;Win64</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="PngComponentsDesign.dproj">
+            <ProjectGuid>{B3C4180B-520B-41C8-8853-0351F059AA78}</ProjectGuid>
+            <Configurations>Debug;Release</Configurations>
+            <Platforms>Win32</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+    </ItemGroup>
+</Project>
