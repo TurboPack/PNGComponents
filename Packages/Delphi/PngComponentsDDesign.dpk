@@ -26,7 +26,7 @@ package PngComponentsDDesign;
 {$IMAGEBASE $400000}
 {$DEFINE RELEASE}
 {$ENDIF IMPLICITBUILDING}
-{$DESCRIPTION 'Png components designtime'}
+{$DESCRIPTION 'Png components for Delphi designtime'}
 {$LIBSUFFIX '220'}
 {$DESIGNONLY}
 {$IMPLICITBUILD ON}
