@@ -27,7 +27,7 @@ package PngComponentsDDesign;
 {$DEFINE RELEASE}
 {$ENDIF IMPLICITBUILDING}
 {$DESCRIPTION 'Png components for Delphi designtime'}
-{$LIBSUFFIX '220'}
+{$LIBSUFFIX '230'}
 {$DESIGNONLY}
 {$IMPLICITBUILD ON}
 
