@@ -184,13 +184,6 @@ procedure ConvertToPNG(Source: TGraphic; Dest: TPngImage);
 var
   MaskLines: array of pngimage.PByteArray;
 
-  function CompareColors(const Color1: TRGBTriple; const Color2: TColor): Boolean;
-  begin
-    Result := (Color1.rgbtBlue = Color2 shr 16 and $FF) and
-      (Color1.rgbtGreen = Color2 shr 8 and $FF) and
-      (Color1.rgbtRed = Color2 and $FF);
-  end;
-
   function ColorToTriple(const Color: TColor): TRGBTriple;
   begin
     Result.rgbtBlue := Color shr 16 and $FF;
@@ -200,35 +193,43 @@ var
 
   procedure GetAlphaMask(SourceColor: TBitmap);
   type
-    TBitmapInfo = packed record
-      bmiHeader: TBitmapV4Header;
-      //Otherwise I may not get per-pixel alpha values.
-      bmiColors: array[0..0] of TRGBQuad;
+    TBitmapInfoV4 = packed record
+      bmiHeader: TBitmapV4Header; //Otherwise I may not get per-pixel alpha values.
+      bmiColors: array[0..2] of TRGBQuad; // reserve space for color lookup table
     end;
   var
     Bits: PRGBALine;
-    BitmapInfo: TBitmapInfo;
+    { The BitmapInfo parameter to GetDIBits is delared as var parameter. So instead of casting around, we simply use
+      the absolute directive to refer to the same memory area. }
+    BitmapInfo: TBitmapInfoV4;
+    BitmapInfoFake: TBitmapInfo absolute BitmapInfo;
     I, X, Y: Integer;
     HasAlpha: Boolean;
     BitsSize: Integer;
+    bmpDC: HDC;
+    bmpHandle: HBITMAP;
   begin
     BitsSize := 4 * SourceColor.Width * SourceColor.Height;
     Bits := AllocMem(BitsSize);
     try
-      ZeroMemory(Bits, BitsSize);
-      ZeroMemory(@BitmapInfo, SizeOf(BitmapInfo));
+      FillChar(BitmapInfo, SizeOf(BitmapInfo), 0);
       BitmapInfo.bmiHeader.bV4Size := SizeOf(BitmapInfo.bmiHeader);
       BitmapInfo.bmiHeader.bV4Width := SourceColor.Width;
-      BitmapInfo.bmiHeader.bV4Height := -SourceColor.Height;
-      //Otherwise the image is upside down.
+      BitmapInfo.bmiHeader.bV4Height := -SourceColor.Height; //Otherwise the image is upside down.
       BitmapInfo.bmiHeader.bV4Planes := 1;
       BitmapInfo.bmiHeader.bV4BitCount := 32;
       BitmapInfo.bmiHeader.bV4V4Compression := BI_BITFIELDS;
       BitmapInfo.bmiHeader.bV4SizeImage := BitsSize;
+      BitmapInfo.bmiColors[0].rgbRed := 255;
+      BitmapInfo.bmiColors[1].rgbGreen := 255;
+      BitmapInfo.bmiColors[2].rgbBlue := 255;
 
-      if GetDIBits(SourceColor.Canvas.Handle, SourceColor.Handle, 0,
-        SourceColor.Height, Bits, Windows.PBitmapInfo(@BitmapInfo)^,
-        DIB_RGB_COLORS) > 0 then begin
+      { Getting the bitmap Handle will invalidate the Canvas.Handle, so it is important to retrieve them in the correct
+        order. As parameter evaluation order is undefined and differs between Win32 and Win64, we get invalid values
+        for Canvas.Handle when we use those properties directly in the call to GetDIBits. }
+      bmpHandle := SourceColor.Handle;
+      bmpDC := SourceColor.Canvas.Handle;
+      if GetDIBits(bmpDC, bmpHandle, 0, SourceColor.Height, Bits, BitmapInfoFake, DIB_RGB_COLORS) > 0 then begin
         //Because Win32 API is a piece of crap when it comes to icons, I have to check
         //whether an has an alpha-channel the hard way.
         HasAlpha := False;
