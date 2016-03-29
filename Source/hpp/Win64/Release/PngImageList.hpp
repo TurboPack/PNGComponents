@@ -1,8 +1,8 @@
 ﻿// CodeGear C++Builder
-// Copyright (c) 1995, 2015 by Embarcadero Technologies, Inc.
+// Copyright (c) 1995, 2016 by Embarcadero Technologies, Inc.
 // All rights reserved
 
-// (DO NOT EDIT: machine generated header) 'PngImageList.pas' rev: 30.00 (Windows)
+// (DO NOT EDIT: machine generated header) 'PngImageList.pas' rev: 31.00 (Windows)
 
 #ifndef PngimagelistHPP
 #define PngimagelistHPP
@@ -119,7 +119,7 @@ class PASCALIMPLEMENTATION TPngImageCollectionItems : public System::Classes::TC
 	typedef System::Classes::TCollection inherited;
 	
 public:
-	TPngImageCollectionItem* operator[](int index) { return Items[index]; }
+	TPngImageCollectionItem* operator[](int index) { return this->Items[index]; }
 	
 private:
 	System::Classes::TPersistent* FOwner;
