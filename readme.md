@@ -1,4 +1,4 @@
-#TurboPack PNGComponents
+# TurboPack PNGComponents
 
 Updated for **10.3 Rio** / VER330 / PKG 260
 
@@ -11,7 +11,7 @@ You can still access [10.2 Tokyo](https://github.com/TurboPack/PNGComponents/rel
 3.  Installation
 4.  License
 
-## 1. Introduction
+### 1. Introduction
 
 PngComponents is a set of components that allows you to include in your application real PNG files.
 You can read more about them in the Doku subfolder. 
@@ -19,19 +19,19 @@ You can read more about them in the Doku subfolder.
 This is a source-only release of TurboPack PNGComponents. It includes
 designtime and runtime packages for Delphi and C++Builder and supports Win32 and Win64.
 
-## 2. Package names
+### 2. Package names
 
 TurboPack PNGComponents package names have the following form:
 
-## Delphi
+#### Delphi
 * PNGComponentsD.bpl       (Delphi Runtime)
 * PNGComponentsDDesign.bpl (Delphi Designtime)
 
-## C++Builder
+#### C++Builder
 * PNGComponentsD.bpl       (C++Builder Runtime)
 * PNGComponentsDDesign.bpl (C++Builder Designtime)
 
-## 3. Installation
+### 3. Installation
 
 PNGComponents are available via the [GetIt Package Manager](http://docwiki.embarcadero.com/RADStudio/en/Installing_a_Package_Using_GetIt_Package_Manager) where you can quickly and easily install and uninstall it.
 
@@ -53,6 +53,6 @@ steps:
      used. The IDE should notify you the components have been
      installed.
      
-## 4. License
+### 4. License
 
 [Mozilla Public License 1.1 (MPL 1.1)](https://www.mozilla.org/en-US/MPL/1.1/)
