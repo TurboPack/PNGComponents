@@ -2,7 +2,7 @@
 // Copyright (c) 1995, 2016 by Embarcadero Technologies, Inc.
 // All rights reserved
 
-// (DO NOT EDIT: machine generated header) 'PngImageList.pas' rev: 31.00 (Windows)
+// (DO NOT EDIT: machine generated header) 'PngImageList.pas' rev: 32.00 (Windows)
 
 #ifndef PngimagelistHPP
 #define PngimagelistHPP
@@ -44,7 +44,6 @@ private:
 	int FLocked;
 	TPngImageCollectionItems* FPngImages;
 	Pngfunctions::TPngOptions FPngOptions;
-	static bool FIDE_WriteData_Hack;
 	int __fastcall GetHeight(void);
 	int __fastcall GetWidth(void);
 	HIDESBASE void __fastcall SetHeight(const int Value);
@@ -72,6 +71,7 @@ public:
 	HIDESBASE virtual int __fastcall AddImage(Vcl::Imglist::TCustomImageList* Value, int Index);
 	HIDESBASE virtual void __fastcall AddImages(Vcl::Imglist::TCustomImageList* Value);
 	HIDESBASE virtual int __fastcall AddMasked(Vcl::Graphics::TBitmap* Image, System::Uitypes::TColor MaskColor);
+	virtual void __fastcall Assign(System::Classes::TPersistent* Source);
 	HIDESBASE void __fastcall BeginUpdate(void);
 	HIDESBASE virtual void __fastcall Clear(void);
 	HIDESBASE virtual void __fastcall Delete(int Index);
@@ -84,9 +84,9 @@ public:
 	HIDESBASE virtual void __fastcall Replace(int Index, Vcl::Graphics::TBitmap* Image, Vcl::Graphics::TBitmap* Mask);
 	HIDESBASE virtual void __fastcall ReplaceIcon(int Index, Vcl::Graphics::TIcon* Image);
 	HIDESBASE virtual void __fastcall ReplaceMasked(int Index, Vcl::Graphics::TBitmap* NewImage, System::Uitypes::TColor MaskColor);
-	/* static */ __property bool IDE_WriteData_Hack = {read=FIDE_WriteData_Hack, write=FIDE_WriteData_Hack, nodefault};
 	
 __published:
+	__property ColorDepth = {default=6};
 	__property bool EnabledImages = {read=FEnabledImages, write=SetEnabledImages, default=1};
 	__property Height = {read=GetHeight, write=SetHeight, default=16};
 	__property TPngImageCollectionItems* PngImages = {read=FPngImages, write=SetPngImages};

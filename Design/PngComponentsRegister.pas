@@ -15,8 +15,6 @@ const
 
 procedure Register;
 begin
-  TPngImageList.IDE_WriteData_Hack := true;
-
   //Register all components
   RegisterComponents(SPageName, [TPngSpeedButton, TPngBitBtn, TPngImageList,
     TPngImageCollection, TPngCheckListBox]);

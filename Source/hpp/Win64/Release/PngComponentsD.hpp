@@ -2,7 +2,7 @@
 // Copyright (c) 1995, 2016 by Embarcadero Technologies, Inc.
 // All rights reserved
 
-// (DO NOT EDIT: machine generated header) 'PngComponentsD.dpk' rev: 31.00 (Windows)
+// (DO NOT EDIT: machine generated header) 'PngComponentsD.dpk' rev: 32.00 (Windows)
 
 #ifndef PngcomponentsdHPP
 #define PngcomponentsdHPP
@@ -115,6 +115,11 @@
 #include <Vcl.Imaging.pnglang.hpp>	// (vclimg)
 #include <Vcl.Imaging.pngimage.hpp>	// (vclimg)
 #include <Vcl.CheckLst.hpp>	// (vclx)
+// SO_SFX: 250
+// PRG_EXT: .bpl
+// BPI_DIR: C:\Users\Public\Documents\Embarcadero\Studio\19.0\Dcp\Win64
+// OBJ_DIR: C:\Users\Public\Documents\Embarcadero\Studio\19.0\Dcp\Win64
+// OBJ_EXT: .o
 
 //-- user supplied -----------------------------------------------------------
 

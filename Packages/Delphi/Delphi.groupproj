@@ -46,16 +46,16 @@
     </Target>
     <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
     <ItemGroup Condition="'$(BuildGroup)'=='Alles'">
-        <BuildGroupProject Include="PngComponentsD.dproj">
-            <ProjectGuid>{A567FA24-8D23-4C0B-9AD6-102B2A1F6D0B}</ProjectGuid>
-            <Configurations>Debug;Release</Configurations>
-            <Platforms>Win32;Win64</Platforms>
-            <Enabled>True</Enabled>
-        </BuildGroupProject>
         <BuildGroupProject Include="PngComponentsDDesign.dproj">
             <ProjectGuid>{B3C4180B-520B-41C8-8853-0351F059AA78}</ProjectGuid>
             <Configurations>Debug;Release</Configurations>
             <Platforms>Win32</Platforms>
+            <Enabled>True</Enabled>
+        </BuildGroupProject>
+        <BuildGroupProject Include="PngComponentsD.dproj">
+            <ProjectGuid>{A567FA24-8D23-4C0B-9AD6-102B2A1F6D0B}</ProjectGuid>
+            <Configurations>Debug;Release</Configurations>
+            <Platforms>Win32;Win64</Platforms>
             <Enabled>True</Enabled>
         </BuildGroupProject>
     </ItemGroup>
