@@ -1,5 +1,9 @@
 unit PngImageList;
 
+{$IF RTLVersion < 15.0 }
+This unit only compiles with Delphi 7 and higher!
+{$IFEND}
+
 interface
 
 uses
@@ -7,18 +11,32 @@ uses
   PngFunctions;
 
 type
+  INameMapping = interface
+  ['{38EECDD8-7440-4EA2-BFD0-424E5BB2C1D5}']
+    function GetName(Index: Integer): string;
+    function IndexOfName(const AName: string): Integer;
+    procedure ListNames(Target: TStrings);
+    property Name[Index: Integer]: string read GetName;
+  end;
+
+type
   TPngImageCollection = class;
   TPngImageCollectionItem = class;
   TPngImageCollectionItems = class;
 
-  TPngImageList = class(TImageList)
+  TPngImageList = class(TImageList, INameMapping)
+    function INameMapping.GetName = GetImageName;
+    function INameMapping.IndexOfName = FindIndexByName;
+    procedure INameMapping.ListNames = ListImageNames;
   private
     FEnabledImages: Boolean;
     FLocked: Integer;
+    FOverlayIndex: array[TOverlay] of Integer;
     FPngImages: TPngImageCollectionItems;
     FPngOptions: TPngOptions;
-  class var
+    function ExtractOverlayIndex(Style: Cardinal): Integer;
     function GetHeight: Integer;
+    function GetImageName(Index: Integer): string;
     function GetWidth: Integer;
     procedure SetHeight(const Value: Integer);
     procedure SetPngOptions(const Value: TPngOptions);
@@ -50,15 +68,18 @@ type
     procedure Clear; virtual;
     procedure Delete(Index: Integer); virtual;
     procedure EndUpdate(Update: Boolean = True);
+    function FindIndexByName(const AName: string): Integer;
     procedure Insert(Index: Integer; Image, Mask: TBitmap); virtual;
     procedure InsertIcon(Index: Integer; Image: TIcon); virtual;
-    procedure InsertPng(Index: Integer; Image: TPngImage; Background: TColor =
-        clNone);
+    procedure InsertPng(Index: Integer; Image: TPngImage; Background: TColor = clNone);
     procedure InsertMasked(Index: Integer; Image: TBitmap; MaskColor: TColor); virtual;
+    procedure ListImageNames(Target: TStrings);
     procedure Move(CurIndex, NewIndex: Integer); virtual;
+    function Overlay(ImageIndex: Integer; Overlay: TOverlay): Boolean;
     procedure Replace(Index: Integer; Image, Mask: TBitmap); virtual;
     procedure ReplaceIcon(Index: Integer; Image: TIcon); virtual;
     procedure ReplaceMasked(Index: Integer; NewImage: TBitmap; MaskColor: TColor); virtual;
+    property ImageName[Index: Integer]: string read GetImageName;
   published
     property ColorDepth default cd32Bit;
     property EnabledImages: Boolean read FEnabledImages write SetEnabledImages default True;
@@ -116,6 +137,8 @@ type
     property PngImage: TPngImage read FPngImage write SetPngImage;
   end;
 
+procedure CopyImageFromImageList(Dest: TPngImage; ImageList: TCustomImageList; Index: Integer);
+
 implementation
 
 uses
@@ -155,7 +178,9 @@ begin
   end;
 end;
 
+{$IF RTLVersion > 18.0 }
 {$POINTERMATH ON}
+{$IFEND}
 function PatchPtr(OldPtr, NewPtr: Pointer; const Name: string; Patch: TMethodPatch): Boolean;
 var
   Access: Cardinal;
@@ -175,15 +200,24 @@ begin
     Move(opCode^, Patch.OldBody[0], memSize);
     if VirtualProtect(OldPtr, 16, PAGE_EXECUTE_READWRITE, @Access) then begin
       opCode^ := $E9; // Near jump
+      {$IF RTLVersion > 18.0 }
       operand^ := PByte(NewPtr) - PByte(OldPtr) - 5;
+      {$ELSE}
+      operand^ := PChar(NewPtr) - PChar(OldPtr) - 5;
+      {$IFEND}
       VirtualProtect(OldPtr, 16, Access, @Access);
+//      {$IF not (defined(CPU386) or defined(CPUX86) or defined(CPUX64)) }
+//      FlushInstructionCache(GetCurrentProcess, OldPtr, memSize);
+//      {$IFEND}
       Result := True;
     end;
   end;
   if not Result then
     Patch.OldPointer := nil;
 end;
+{$IF RTLVersion > 18.0 }
 {$POINTERMATH OFF}
+{$IFEND}
 
 procedure ApplyMethodPatches;
 type
@@ -208,7 +242,7 @@ var
   I: Integer;
 begin
   if ImageListCount = 0 then begin
-    SetLength(Pointers, 14);
+    SetLength(Pointers, 15);
     Pointers[0] := Combo(@TCustomImageList.Add, @TPngImageList.Add, 'Add');
     Pointers[1] := Combo(@TCustomImageList.AddIcon, @TPngImageList.AddIcon, 'AddIcon');
     Pointers[2] := Combo(@TCustomImageList.AddImage, @TPngImageList.AddImage, 'AddImage');
@@ -223,6 +257,7 @@ begin
     Pointers[11] := Combo(@TCustomImageList.Replace, @TPngImageList.Replace, 'Replace');
     Pointers[12] := Combo(@TCustomImageList.ReplaceIcon, @TPngImageList.ReplaceIcon, 'ReplaceIcon');
     Pointers[13] := Combo(@TCustomImageList.ReplaceMasked, @TPngImageList.ReplaceMasked, 'ReplaceMasked');
+    Pointers[14] := Combo(@TCustomImageList.Overlay, @TPngImageList.Overlay, 'Overlay');
 
     MethodPatches := TObjectList.Create;
     for I := Low(Pointers) to High(Pointers) do begin
@@ -241,6 +276,52 @@ procedure RevertPatchedMethods;
 begin
   if ImageListCount = 0 then
     FreeAndNil(MethodPatches);
+end;
+
+procedure CopyImageFromImageList(Dest: TPngImage; ImageList: TCustomImageList; Index: Integer);
+var
+  Icon: TIcon;
+  IconInfo: TIconInfo;
+  ColorBitmap, MaskBitmap: TBitmap;
+  X, Y: Integer;
+  AlphaLine: pngimage.PByteArray;
+  Png: TPngImageCollectionItem;
+begin
+  if ImageList is TPngImageList then begin
+    //This is easy, just copy the PNG object from the imagelist to the PNG object
+    //from the button
+    Png := TPNGImageList(ImageList).PngImages[Index];
+    if Png <> nil then
+      Dest.Assign(Png.PngImage);
+  end
+  else begin
+    Icon := TIcon.Create;
+    ColorBitmap := TBitmap.Create;
+    MaskBitmap := TBitmap.Create;
+    try
+      //Try to copy an icon to a PNG object, including transparency
+      ImageList.GetIcon(Index, Icon);
+      if GetIconInfo(Icon.Handle, IconInfo) then begin
+        //First, pump the colors into the PNG object
+        ColorBitmap.Handle := IconInfo.hbmColor;
+        ColorBitmap.PixelFormat := pf24bit;
+        Dest.Assign(ColorBitmap);
+
+        //Finally, copy the transparency
+        Dest.CreateAlpha;
+        MaskBitmap.Handle := IconInfo.hbmMask;
+        for Y := 0 to Dest.Height - 1 do begin
+          AlphaLine := Dest.AlphaScanline[Y];
+          for X := 0 to Dest.Width - 1 do
+            AlphaLine^[X] := Integer(GetPixel(MaskBitmap.Canvas.Handle, X, Y) = COLORREF(clBlack)) * $FF;
+        end;
+      end;
+    finally
+      MaskBitmap.Free;
+      ColorBitmap.Free;
+      Icon.Free;
+    end;
+  end;
 end;
 
 { TMethodPatch }
@@ -281,7 +362,12 @@ begin
 end;
 
 constructor TPngImageList.Create(AOwner: TComponent);
+var
+  I: Integer;
 begin
+  for I := Low(FOverlayIndex) to High(FOverlayIndex) do begin
+    FOverlayIndex[I] := -1;
+  end;
   inherited Create(AOwner);
   ColorDepth := cd32Bit;
   if ImageListCount = 0 then
@@ -392,7 +478,15 @@ begin
     Png := TPngImage.Create;
     try
       CopyImageFromImageList(Png, Value, Index);
-      result := AddPng(Png);
+      if RTLVersion < 31.00 then begin
+        result := AddPng(Png);
+      end
+      else begin
+        { Since Berlin AddImage returns the new size of the list, while before it returned the index of the added image.
+          Although this behaviour seems somewhat strange, it actually matches the documentation. }
+        AddPng(Png);
+        result := FPngImages.Count;
+      end;
     finally
       Png.Free;
     end;
@@ -624,6 +718,7 @@ procedure TPngImageList.DoDraw(Index: Integer; Canvas: TCanvas; X, Y: Integer; S
 var
   PaintRect: TRect;
   Options: TPngOptions;
+  IndexOfOverlay: Integer;
   Png: TPngImageCollectionItem;
 begin
   //Draw a PNG directly to the Canvas. This is the preferred method to call,
@@ -634,8 +729,16 @@ begin
   else
     Options := FPngOptions;
   Png := FPngImages.Items[Index];
-  if Png <> nil then
+  if Png <> nil then begin
     DrawPNG(Png.PngImage, Canvas, PaintRect, Options);
+    IndexOfOverlay := ExtractOverlayIndex(Style);
+    if (IndexOfOverlay >= 0) and (IndexOfOverlay < Count) then begin
+      Png := PngImages.Items[IndexOfOverlay];
+      if Png <> nil then begin
+        DrawPNG(Png.PngImage, Canvas, PaintRect, Options);
+      end;
+    end;
+  end;
 end;
 
 procedure TPngImageList.EndUpdate(Update: Boolean);
@@ -645,9 +748,46 @@ begin
     CopyPngs;
 end;
 
+function TPngImageList.ExtractOverlayIndex(Style: Cardinal): Integer;
+var
+  idx: Cardinal;
+begin
+  Result := -1;
+  idx := Style and ILD_OVERLAYMASK;
+  if idx > 0 then begin
+    idx := idx shr 8;
+    if (idx > 0) then begin
+      Dec(idx);
+      {$WARN COMPARISON_TRUE OFF }
+      if (idx >= Low(FOverlayIndex)) and (idx <= High(FOverlayIndex)) then begin
+        Result := FOverlayIndex[idx];
+      end;
+      {$WARN COMPARISON_TRUE DEFAULT }
+    end;
+  end;
+end;
+
+function TPngImageList.FindIndexByName(const AName: string): Integer;
+var
+  I: Integer;
+begin
+  Result := -1;
+  for I := 0 to PngImages.Count - 1 do begin
+    if SameText(PngImages[I].Name, AName) then begin
+      Result := I;
+      Break;
+    end;
+  end;
+end;
+
 function TPngImageList.GetHeight: Integer;
 begin
   Result := inherited Height;
+end;
+
+function TPngImageList.GetImageName(Index: Integer): string;
+begin
+  Result := PngImages[Index].Name;
 end;
 
 function TPngImageList.GetWidth: Integer;
@@ -806,6 +946,15 @@ begin
   end;
 end;
 
+procedure TPngImageList.ListImageNames(Target: TStrings);
+var
+  I: Integer;
+begin
+  for I := 0 to PngImages.Count - 1 do begin
+    Target.Add(PngImages[I].Name);
+  end;
+end;
+
 procedure TPngImageList.Move(CurIndex, NewIndex: Integer);
 var
   Patch: TMethodPatch;
@@ -835,6 +984,12 @@ begin
       end;
     end;
   end;
+end;
+
+function TPngImageList.Overlay(ImageIndex: Integer; Overlay: TOverlay): Boolean;
+begin
+  Result := (ImageIndex >= 0) and (ImageIndex < Count);
+  FOverlayIndex[Overlay] := ImageIndex;
 end;
 
 function TPngImageList.PngToIcon(const Png: TPngImage; Background: TColor): HICON;
