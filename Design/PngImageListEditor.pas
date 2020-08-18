@@ -80,6 +80,7 @@ type
     FSelectionBodyColor: TColor;
     FSelectionBorderColor: TColor;
     function ConformDimensions(Png: TPngImage): Boolean;
+    function ConformAdjustDimensions(Png: TPngImage; const AFileName: string): Boolean;
     function FirstSelected: Integer;
     function LastSelected: Integer;
     procedure DrawBackground(Canvas: TCanvas; const ARect: TRect; ScrollPos, Index: Integer;
@@ -117,7 +118,7 @@ const
 const
   SIncorrectSize =
     'The selected PNG "%s" must be %dx%d in size, while its actual size is %dx%d';
-
+  SAgustSize = 'Adjust size of imagelist to match loaded image?';
 var
   ResX, ResY: Integer;
 
@@ -551,7 +552,7 @@ begin
           Chunks.RemoveChunk(Chunks.ItemFromClass(TChunkgAMA));
       end;
       //Does the image conform the specified dimensions, if any?
-      if ConformDimensions(Png.PngImage) then begin
+      if ConformAdjustDimensions(Png.PngImage, ExtractFilename(dlgOpenPicture.Files[I])) then begin
         //Update maximum image width
         if FMaxWidth < Png.PngImage.Width then
           FMaxWidth := Png.PngImage.Width;
@@ -571,9 +572,6 @@ begin
       end
       else begin
         //The image does not conform the specified dimensions
-        MessageBox(Handle, PChar(Format(SIncorrectSize,
-          [ExtractFilename(dlgOpenPicture.Files[I]), ImageWidth, ImageHeight,
-          Png.PngImage.Width, Png.PngImage.Height])), PChar(Caption), MB_ICONERROR or MB_OK);
         Images.Items.Delete(Png.Index);
       end;
     end;
@@ -782,6 +780,32 @@ begin
       or DT_SINGLELINE or DT_VCENTER);
 
     Canvas.Brush.Color := clWindow;
+  end;
+end;
+
+{ TPngImageListEditorDlg }
+
+function TPngImageListEditorDlg.ConformAdjustDimensions(Png: TPngImage; const AFileName: string): Boolean;
+begin
+  Result := ConformDimensions(Png);
+  if not Result then begin
+    if Images.Items.Count = 1 then begin
+      { The image does not conform the specified dimensions, but is the first image loaded.
+        We offer to adjust the image size of the imagelist to the size of the just loaded image. }
+      if MessageBox(Handle, PChar(Format(SIncorrectSize + #13 + SAgustSize,
+        [AFileName, ImageWidth, ImageHeight,
+        Png.Width, Png.Height])), PChar(Caption), MB_ICONQUESTION or MB_YESNO) = mrYes then begin
+        ImageWidth := Png.Width;
+        ImageHeight := Png.Height;
+        Result := True;
+      end;
+    end
+    else begin
+      { The image does not conform the specified dimensions }
+      MessageBox(Handle, PChar(Format(SIncorrectSize,
+        [AFileName, ImageWidth, ImageHeight,
+        Png.Width, Png.Height])), PChar(Caption), MB_ICONERROR or MB_OK);
+    end;
   end;
 end;
 
@@ -1116,6 +1140,20 @@ begin
 
     //Draw the image at the center of (ARect.Left, ARect.Top, ARect.Left + FMaxWidth, ARect.Bottom)
     with Images.Items[Index] do begin
+      {$IF RTLVersion < 23 }
+      if (ARect.Right - ARect.Left) < PngImage.Height then begin
+        DrawRect.Left := ARect.Left + 2;
+        DrawRect.Top := ARect.Top;
+        DrawRect.Right := DrawRect.Left + Round(PngImage.Width * (ARect.Right - ARect.Left)/PngImage.Height);
+        DrawRect.Bottom := ARect.Bottom;
+      end
+      else begin
+        DrawRect.Left := ARect.Left + (FMaxWidth - PngImage.Width) div 2 + 2;
+        DrawRect.Top := ARect.Top + (ARect.Bottom - ARect.Top - PngImage.Height) div 2;
+        DrawRect.Right := DrawRect.Left + PngImage.Width;
+        DrawRect.Bottom := DrawRect.Top + PngImage.Height;
+      end;
+      {$ELSE}
       if ARect.Height < PngImage.Height then begin
         DrawRect.Left := ARect.Left + 2;
         DrawRect.Top := ARect.Top;
@@ -1128,6 +1166,7 @@ begin
         DrawRect.Right := DrawRect.Left + PngImage.Width;
         DrawRect.Bottom := DrawRect.Top + PngImage.Height;
       end;
+      {$IFEND}
       PngImage.Draw(lbxImages.Canvas, DrawRect);
     end;
 

@@ -5,27 +5,31 @@ interface
 uses
   Windows, Graphics, ImgList, Contnrs, pngimage;
 
+{$IF RTLVersion < 20.0 }
+  {$IF RTLVersion < 15.0 }
+    PngComponents are only compatible with Delphi 7 and higher!
+  {$IFEND}
+type
+  TPngImage = TPNGObject;
+{$IFEND}
+
 type
   TPngOption = (pngBlendOnDisabled, pngGrayscaleOnDisabled);
   TPngOptions = set of TPngOption;
-  TRGBLine = array[Word] of TRGBTriple;
-  PRGBLine = ^TRGBLine;
-  TRGBALine = array[Word] of TRGBQuad;
-  PRGBALine = ^TRGBALine;
 
+procedure MakeDisabledImage(Image: TPngImage; const Options: TPngOptions);
 procedure MakeImageBlended(Image: TPngImage; Amount: Byte = 127);
 procedure MakeImageGrayscale(Image: TPngImage; Amount: Byte = 255);
 procedure DrawPNG(Png: TPngImage; Canvas: TCanvas; const ARect: TRect; const Options: TPngOptions);
 procedure ConvertToPNG(Source: TGraphic; Dest: TPngImage);
 procedure CreatePNG(Color, Mask: TBitmap; Dest: TPngImage; InverseMask: Boolean = False);
 procedure CreatePNGMasked(Bitmap: TBitmap; Mask: TColor; Dest: TPngImage);
-procedure CopyImageFromImageList(Dest: TPngImage; ImageList: TCustomImageList; Index: Integer);
 procedure SlicePNG(JoinedPNG: TPngImage; Columns, Rows: Integer; out SlicedPNGs: TObjectList);
 
 implementation
 
 uses
-  SysUtils, Classes, PngImageList;
+  SysUtils;
 
 function ColorToTriple(Color: TColor): TRGBTriple;
 var
@@ -181,6 +185,9 @@ begin
 end;
 
 procedure ConvertToPNG(Source: TGraphic; Dest: TPngImage);
+type
+  TRGBALine = array[Word] of TRGBQuad;
+  PRGBALine = ^TRGBALine;
 var
   MaskLines: array of pngimage.PByteArray;
 
@@ -439,52 +446,6 @@ begin
   end;
 end;
 
-procedure CopyImageFromImageList(Dest: TPngImage; ImageList: TCustomImageList; Index: Integer);
-var
-  Icon: TIcon;
-  IconInfo: TIconInfo;
-  ColorBitmap, MaskBitmap: TBitmap;
-  X, Y: Integer;
-  AlphaLine: pngimage.PByteArray;
-  Png: TPngImageCollectionItem;
-begin
-  if ImageList is TPngImageList then begin
-    //This is easy, just copy the PNG object from the imagelist to the PNG object
-    //from the button
-    Png := TPNGImageList(ImageList).PngImages[Index];
-    if Png <> nil then
-      Dest.Assign(Png.PngImage);
-  end
-  else begin
-    Icon := TIcon.Create;
-    ColorBitmap := TBitmap.Create;
-    MaskBitmap := TBitmap.Create;
-    try
-      //Try to copy an icon to a PNG object, including transparency
-      ImageList.GetIcon(Index, Icon);
-      if GetIconInfo(Icon.Handle, IconInfo) then begin
-        //First, pump the colors into the PNG object
-        ColorBitmap.Handle := IconInfo.hbmColor;
-        ColorBitmap.PixelFormat := pf24bit;
-        Dest.Assign(ColorBitmap);
-
-        //Finally, copy the transparency
-        Dest.CreateAlpha;
-        MaskBitmap.Handle := IconInfo.hbmMask;
-        for Y := 0 to Dest.Height - 1 do begin
-          AlphaLine := Dest.AlphaScanline[Y];
-          for X := 0 to Dest.Width - 1 do
-            AlphaLine^[X] := Integer(GetPixel(MaskBitmap.Canvas.Handle, X, Y) = COLORREF(clBlack)) * $FF;
-        end;
-      end;
-    finally
-      MaskBitmap.Free;
-      ColorBitmap.Free;
-      Icon.Free;
-    end;
-  end;
-end;
-
 procedure SlicePNG(JoinedPNG: TPngImage; Columns, Rows: Integer; out SlicedPNGs: TObjectList);
 var
   X, Y, ImageX, ImageY, OffsetX, OffsetY: Integer;
@@ -541,10 +502,22 @@ begin
   end;
 end;
 
+procedure MakeDisabledImage(Image: TPngImage; const Options: TPngOptions);
+begin
+  if pngBlendOnDisabled in Options then
+    MakeImageBlended(Image);
+  if pngGrayscaleOnDisabled in Options then
+    MakeImageGrayscale(Image);
+end;
+
+{$IF RTLVersion >= 20.0 }
+{$IFDEF RegisterOldPngFormat}
 type
   TPNGObject = class(TPngImage);
 initialization
   TPicture.RegisterFileFormat('', '', TPNGObject);
 finalization
   TPicture.UnregisterGraphicClass(TPNGObject);
+{$IFEND}
+{$IFEND}
 end.
