@@ -262,7 +262,7 @@ begin
   if ImageListCount = 0 then begin
     {$IF CompilerVersion >= 34.0 Delphi 10.4 Sydney }
     SetLength(Pointers, 17);
-    {ELSE}
+    {$ELSE}
     SetLength(Pointers, 15);
     {$ENDIF}
     Pointers[0] := Combo(@TCustomImageList.Add, @TPngImageList.Add, 'Add');
