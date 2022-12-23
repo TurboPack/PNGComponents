@@ -1574,9 +1574,11 @@ begin
 end;
 
 initialization
+  MethodPatches := nil;
 
 finalization
   MethodPatches.Free;
+  MethodPatches := nil;
 
 end.
 
