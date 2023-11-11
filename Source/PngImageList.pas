@@ -85,7 +85,7 @@ type
     procedure InsertMasked(Index: Integer; Image: TBitmap; MaskColor: TColor); virtual;
     procedure ListImageNames(Target: TStrings);
     procedure Move(CurIndex, NewIndex: Integer); virtual;
-    function Overlay(ImageIndex: Integer; Overlay: TOverlay): Boolean;
+    function Overlay(ImageIndex: Integer; Overlay: TOverlay): Boolean; reintroduce;
     procedure Replace(Index: Integer; Image, Mask: TBitmap); virtual;
     procedure ReplaceIcon(Index: Integer; Image: TIcon); virtual;
     procedure ReplaceMasked(Index: Integer; NewImage: TBitmap; MaskColor: TColor); virtual;
