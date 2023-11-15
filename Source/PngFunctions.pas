@@ -29,7 +29,7 @@ procedure SlicePNG(JoinedPNG: TPngImage; Columns, Rows: Integer; out SlicedPNGs:
 implementation
 
 uses
-  SysUtils, Classes;
+  SysUtils;
 
 function ColorToTriple(Color: TColor): TRGBTriple;
 var
@@ -518,6 +518,6 @@ initialization
   TPicture.RegisterFileFormat('', '', TPNGObject);
 finalization
   TPicture.UnregisterGraphicClass(TPNGObject);
-{$IFEND}
+{$ENDIF}
 {$IFEND}
 end.
