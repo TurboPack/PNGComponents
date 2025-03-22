@@ -10,7 +10,7 @@
         <Platform Condition="'$(Platform)'==''">Win32</Platform>
         <ProjectGuid>{A567FA24-8D23-4C0B-9AD6-102B2A1F6D0B}</ProjectGuid>
         <ProjectName Condition="'$(ProjectName)'==''">PngComponentsD</ProjectName>
-        <ProjectVersion>20.2</ProjectVersion>
+        <ProjectVersion>20.3</ProjectVersion>
         <TargetedPlatforms>3</TargetedPlatforms>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
