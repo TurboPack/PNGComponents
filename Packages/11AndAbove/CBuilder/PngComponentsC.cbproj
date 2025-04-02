@@ -171,6 +171,24 @@
         <PackageImport Include="vclx.bpi">
             <BuildOrder>11</BuildOrder>
         </PackageImport>
+        <DelphiCompile Include="..\..\..\Source\PngBitBtn.pas">
+            <BuildOrder>6</BuildOrder>
+        </DelphiCompile>
+        <DelphiCompile Include="..\..\..\Source\PngButtonFunctions.pas">
+            <BuildOrder>7</BuildOrder>
+        </DelphiCompile>
+        <DelphiCompile Include="..\..\..\Source\PngCheckListBox.pas">
+            <BuildOrder>8</BuildOrder>
+        </DelphiCompile>
+        <DelphiCompile Include="..\..\..\Source\PngFunctions.pas">
+            <BuildOrder>9</BuildOrder>
+        </DelphiCompile>
+        <DelphiCompile Include="..\..\..\Source\PngImageList.pas">
+            <BuildOrder>10</BuildOrder>
+        </DelphiCompile>
+        <DelphiCompile Include="..\..\..\Source\PngSpeedButton.pas">
+            <BuildOrder>11</BuildOrder>
+        </DelphiCompile>
         <BuildConfiguration Include="Base">
             <Key>Base</Key>
         </BuildConfiguration>
